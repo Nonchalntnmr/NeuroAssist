@@ -28,9 +28,9 @@ struct ResultView: View {
                     HStack(spacing: 8) {
                         SawtoothSignatureView(height: 18, cycles: 3)
                             .frame(width: 40)
-                        Text(result.didAbstain ? "RESULT · ABSTAIN" : "RESULT · MEASURED")
+                        Text("RESULT · \(result.scientificStatus.rawValue)")
                             .font(.system(.caption, design: .monospaced).weight(.bold))
-                            .foregroundStyle(result.didAbstain ? NeuroTheme.amber : NeuroTheme.teal)
+                            .foregroundStyle(result.scientificStatus == .valid ? NeuroTheme.teal : NeuroTheme.amber)
                     }
                     Spacer()
 
@@ -238,6 +238,20 @@ struct ResultView: View {
                 .padding(.vertical, 16)
             }
 
+            // Physical Cadence & Nyquist Diagnostic Pill
+            HStack(spacing: 8) {
+                Image(systemName: "waveform.path.ecg")
+                    .font(.caption2)
+                    .foregroundStyle(NeuroTheme.teal)
+                Text(String(format: "Hardware: 60 Hz TrueDepth · %.1f fps · Jitter: ±%.1f ms · Nyquist Limit: 30 Hz", result.cadenceDiagnostics.meanFps, result.cadenceDiagnostics.cadenceJitterMs))
+                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(NeuroTheme.textSecondary)
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(NeuroTheme.background.opacity(0.5))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+
             // 95% Interval underneath
             VStack(alignment: .leading, spacing: 4) {
                 Text("95% BINOMIAL CONFIDENCE INTERVAL")
@@ -292,13 +306,13 @@ struct ResultView: View {
     private var abstainHeroCard: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                Label("ABSTAIN — INSUFFICIENT SIGNAL QUALITY", systemImage: "hand.raised.fill")
+                Label(result.scientificStatus == .invalid ? "INVALID ACQUISITION — PROTOCOL FAILED" : "INCONCLUSIVE — INSUFFICIENT EVIDENCE", systemImage: result.scientificStatus == .invalid ? "exclamationmark.triangle.fill" : "hand.raised.fill")
                     .font(.system(.caption, design: .monospaced).weight(.bold))
                     .foregroundStyle(NeuroTheme.amber)
                 Spacer()
             }
 
-            Text("ABSTAIN")
+            Text(result.scientificStatus == .invalid ? "INVALID" : "ABSTAIN")
                 .font(.system(size: 46, weight: .heavy, design: .rounded))
                 .foregroundStyle(NeuroTheme.amber)
 

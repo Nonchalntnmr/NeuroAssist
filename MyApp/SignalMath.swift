@@ -194,6 +194,76 @@ public enum FailureRootCause: String, Sendable, Equatable, Codable {
     case cameraPerformance = "CAMERA FRAME RATE"
 }
 
+public enum ScientificMeasurementStatus: String, Sendable, Codable, CaseIterable, Equatable {
+    case valid = "VALID"
+    case inconclusive = "INCONCLUSIVE"
+    case invalid = "INVALID"
+
+    public var displayTitle: String {
+        switch self {
+        case .valid: return "VALID MEASUREMENT"
+        case .inconclusive: return "INCONCLUSIVE (ABSTAIN)"
+        case .invalid: return "INVALID ACQUISITION"
+        }
+    }
+}
+
+public struct AcquisitionCadenceDiagnostics: Sendable, Equatable, Codable {
+    public let meanFps: Double
+    public let medianDtMs: Double
+    public let cadenceJitterMs: Double
+    public let minDtMs: Double
+    public let maxDtMs: Double
+    public let droppedFrameCount: Int
+    public let droppedFrameRatio: Double
+    public let nyquistBandwidthHz: Double
+    public let isSamplingIrregular: Bool
+
+    public init(
+        meanFps: Double = 60.0,
+        medianDtMs: Double = 16.67,
+        cadenceJitterMs: Double = 0.0,
+        minDtMs: Double = 16.67,
+        maxDtMs: Double = 16.67,
+        droppedFrameCount: Int = 0,
+        droppedFrameRatio: Double = 0.0,
+        nyquistBandwidthHz: Double = 30.0,
+        isSamplingIrregular: Bool = false
+    ) {
+        self.meanFps = meanFps
+        self.medianDtMs = medianDtMs
+        self.cadenceJitterMs = cadenceJitterMs
+        self.minDtMs = minDtMs
+        self.maxDtMs = maxDtMs
+        self.droppedFrameCount = droppedFrameCount
+        self.droppedFrameRatio = droppedFrameRatio
+        self.nyquistBandwidthHz = nyquistBandwidthHz
+        self.isSamplingIrregular = isSamplingIrregular
+    }
+}
+
+public struct ArtifactClassificationFlags: Sendable, Equatable, Codable {
+    public let blinkFramesCount: Int
+    public let fastPhaseSaccadeFramesCount: Int
+    public let rapidMotionUndersampledCount: Int
+    public let headMovementExcursionsCount: Int
+    public let postSaccadicBlankedCount: Int
+
+    public init(
+        blinkFramesCount: Int = 0,
+        fastPhaseSaccadeFramesCount: Int = 0,
+        rapidMotionUndersampledCount: Int = 0,
+        headMovementExcursionsCount: Int = 0,
+        postSaccadicBlankedCount: Int = 0
+    ) {
+        self.blinkFramesCount = blinkFramesCount
+        self.fastPhaseSaccadeFramesCount = fastPhaseSaccadeFramesCount
+        self.rapidMotionUndersampledCount = rapidMotionUndersampledCount
+        self.headMovementExcursionsCount = headMovementExcursionsCount
+        self.postSaccadicBlankedCount = postSaccadicBlankedCount
+    }
+}
+
 public struct QualityCheckItem: Sendable, Identifiable, Equatable, Codable {
     public let id: String
     public let name: String
@@ -252,6 +322,7 @@ public struct CalibratedTracePoint: Sendable, Identifiable, Equatable, Codable {
 public struct OKNAnalysisResult: Sendable, Equatable {
     public let mode: MeasurementProtocolMode
     public let provenance: DataProvenance
+    public let scientificStatus: ScientificMeasurementStatus
     public let didAbstain: Bool
     public let stoppedEarly: Bool
     public let recordingDurationSec: Double
@@ -259,6 +330,8 @@ public struct OKNAnalysisResult: Sendable, Equatable {
     public let totalFrames: Int
     public let validFrames: Int
     public let rejectedFrames: Int
+    public let cadenceDiagnostics: AcquisitionCadenceDiagnostics
+    public let artifactFlags: ArtifactClassificationFlags
     public let trackingNoiseDeg: Double
     public let calibrationRMSDeg: Double
     public let gain: Double?
@@ -273,13 +346,16 @@ public struct OKNAnalysisResult: Sendable, Equatable {
     public init(
         mode: MeasurementProtocolMode = .researchFixed,
         provenance: DataProvenance = .liveCamera,
-        didAbstain: Bool,
+        scientificStatus: ScientificMeasurementStatus? = nil,
+        didAbstain: Bool? = nil,
         stoppedEarly: Bool = false,
         recordingDurationSec: Double = 10.0,
         analysisLatencyMs: Double = 0.0,
         totalFrames: Int = 0,
         validFrames: Int = 0,
         rejectedFrames: Int = 0,
+        cadenceDiagnostics: AcquisitionCadenceDiagnostics = AcquisitionCadenceDiagnostics(),
+        artifactFlags: ArtifactClassificationFlags = ArtifactClassificationFlags(),
         trackingNoiseDeg: Double = .nan,
         calibrationRMSDeg: Double = .nan,
         gain: Double?,
@@ -291,15 +367,23 @@ public struct OKNAnalysisResult: Sendable, Equatable {
         tracePoints: [CalibratedTracePoint],
         checks: [QualityCheckItem]
     ) {
+        let status: ScientificMeasurementStatus = {
+            if let s = scientificStatus { return s }
+            if let a = didAbstain { return a ? .inconclusive : .valid }
+            return .valid
+        }()
         self.mode = mode
         self.provenance = provenance
-        self.didAbstain = didAbstain
+        self.scientificStatus = status
+        self.didAbstain = status != .valid
         self.stoppedEarly = stoppedEarly
         self.recordingDurationSec = recordingDurationSec
         self.analysisLatencyMs = analysisLatencyMs
         self.totalFrames = totalFrames
         self.validFrames = validFrames
         self.rejectedFrames = rejectedFrames
+        self.cadenceDiagnostics = cadenceDiagnostics
+        self.artifactFlags = artifactFlags
         self.trackingNoiseDeg = trackingNoiseDeg
         self.calibrationRMSDeg = calibrationRMSDeg
         self.gain = gain
@@ -315,6 +399,7 @@ public struct OKNAnalysisResult: Sendable, Equatable {
     public static func == (lhs: OKNAnalysisResult, rhs: OKNAnalysisResult) -> Bool {
         lhs.mode == rhs.mode &&
         lhs.provenance == rhs.provenance &&
+        lhs.scientificStatus == rhs.scientificStatus &&
         lhs.didAbstain == rhs.didAbstain &&
         lhs.stoppedEarly == rhs.stoppedEarly &&
         lhs.recordingDurationSec == rhs.recordingDurationSec &&
@@ -326,7 +411,9 @@ public struct OKNAnalysisResult: Sendable, Equatable {
         lhs.cleanWindowCount == rhs.cleanWindowCount &&
         lhs.windows == rhs.windows &&
         lhs.tracePoints == rhs.tracePoints &&
-        lhs.checks == rhs.checks
+        lhs.checks == rhs.checks &&
+        lhs.cadenceDiagnostics == rhs.cadenceDiagnostics &&
+        lhs.artifactFlags == rhs.artifactFlags
     }
 
     public var failedChecks: [QualityCheckItem] {
@@ -382,6 +469,19 @@ public enum SignalMath {
     public static let adaptiveOKNTargetCIHalfWidthDegPerSec: Double = 1.0
 
     // MARK: Statistical Helpers
+
+    /// Prevents angular wraparound discontinuities when computing numerical derivatives
+    public static func unwrapAngleDeg(_ angleDeg: Double, previousDeg: Double) -> Double {
+        let diff = angleDeg - previousDeg
+        if diff > 180.0 {
+            return angleDeg - 360.0 * ceil((diff - 180.0) / 360.0)
+        } else if diff < -180.0 {
+            return angleDeg + 360.0 * ceil((-diff - 180.0) / 360.0)
+        }
+        return angleDeg
+    }
+
+
 
     public static func median(_ values: [Double]) -> Double? {
         let finite = values.filter { $0.isFinite }.sorted()
@@ -769,6 +869,22 @@ public enum SignalMath {
             }
         }
         let droppedRatio = Double(droppedFrameCount) / Double(totalCount + expectedExtraFrames)
+        let meanDt = dts.isEmpty ? (1.0 / 60.0) : (dts.reduce(0.0, +) / Double(dts.count))
+        let varianceDt = dts.isEmpty ? 0.0 : (dts.map { pow($0 - meanDt, 2.0) }.reduce(0.0, +) / Double(max(1, dts.count - 1)))
+        let stdDevDtMs = sqrt(varianceDt) * 1000.0
+        let minDtMs = (dts.min() ?? (1.0 / 60.0)) * 1000.0
+        let maxDtMs = (dts.max() ?? (1.0 / 60.0)) * 1000.0
+        let cadenceDiagnostics = AcquisitionCadenceDiagnostics(
+            meanFps: fps,
+            medianDtMs: medianDt * 1000.0,
+            cadenceJitterMs: stdDevDtMs,
+            minDtMs: minDtMs,
+            maxDtMs: maxDtMs,
+            droppedFrameCount: droppedFrameCount,
+            droppedFrameRatio: droppedRatio,
+            nyquistBandwidthHz: 0.5 * fps,
+            isSamplingIrregular: stdDevDtMs > 4.0 || droppedRatio > 0.05
+        )
 
         // Head rotation 95th percentile vs start
         let startHeadSamples = samples.prefix(min(15, totalCount)).filter(\.faceTracked)
@@ -782,11 +898,15 @@ public enum SignalMath {
 
         // 2. Velocity by central difference on UNSMOOTHED calibrated degrees & fast-phase detection
         var rawFastPhase = [Bool](repeating: false, count: totalCount)
+        var blinkCount = 0
+        var rapidMotionUndersampledCount = 0
         let singleStepThresholdDeg = -0.25
         let twoFrameStepThresholdDeg = -0.38
         let retrogradeVelocityThresholdDegPerSec = -8.0
+        let nyquistVelocityLimitDegPerSec = 120.0
 
         for i in 0..<totalCount {
+            if samples[i].isBlink { blinkCount += 1 }
             guard validMask[i] else {
                 rawFastPhase[i] = true
                 continue
@@ -815,15 +935,23 @@ public enum SignalMath {
                 if abs(v) > fastPhaseVelocityThresholdDegPerSec || directedV < retrogradeVelocityThresholdDegPerSec {
                     rawFastPhase[i] = true
                 }
+                if abs(v) > nyquistVelocityLimitDegPerSec {
+                    rapidMotionUndersampledCount += 1
+                    rawFastPhase[i] = true
+                }
             }
 
-            // 1-frame retrograde reset jump against stripe direction
+            // 1-frame retrograde reset jump against stripe direction or rapid jump
             if i > 0 && validMask[i - 1] {
                 let step = (calibratedAngles[i] - calibratedAngles[i - 1]) * stripeDirectionSign
                 let dt = samples[i].timestamp - samples[i - 1].timestamp
                 if step < singleStepThresholdDeg || (dt > 1e-5 && (step / dt) < retrogradeVelocityThresholdDegPerSec) {
                     rawFastPhase[i] = true
                     rawFastPhase[i - 1] = true
+                }
+                if abs(step) > 2.0 {
+                    rapidMotionUndersampledCount += 1
+                    rawFastPhase[i] = true
                 }
             }
 
@@ -838,15 +966,25 @@ public enum SignalMath {
             }
         }
 
-        // Apply 1-frame guard on each side of any fast-phase or invalid frame
+        // Apply 1-frame guard on each side of any fast-phase or invalid frame (2-frame post guard)
         var cleanMask = [Bool](repeating: true, count: totalCount)
+        var postSaccadicBlankedCount = 0
         for i in 0..<totalCount {
             if !validMask[i] || rawFastPhase[i] {
                 cleanMask[i] = false
                 if i > 0 { cleanMask[i - 1] = false }
-                if i + 1 < totalCount { cleanMask[i + 1] = false }
+                if i + 1 < totalCount { cleanMask[i + 1] = false; postSaccadicBlankedCount += 1 }
+                if i + 2 < totalCount { cleanMask[i + 2] = false; postSaccadicBlankedCount += 1 }
             }
         }
+
+        let artifactFlags = ArtifactClassificationFlags(
+            blinkFramesCount: blinkCount,
+            fastPhaseSaccadeFramesCount: rawFastPhase.filter { $0 }.count,
+            rapidMotionUndersampledCount: rapidMotionUndersampledCount,
+            headMovementExcursionsCount: headExcursions.filter { $0 > 2.0 }.count,
+            postSaccadicBlankedCount: postSaccadicBlankedCount
+        )
 
         // 3. Extract slow-phase windows (max 0.5 s, min 5 samples, OLS line fit on UNSMOOTHED calibrated degrees)
         var windows = [SlowPhaseWindow]()
@@ -1098,10 +1236,27 @@ public enum SignalMath {
         let allPassed = checks.allSatisfy(\.passed)
         let latencyMs = (CFAbsoluteTimeGetCurrent() - startClock) * 1000.0
 
-        if allPassed, let validSlope = medianSlope, let validGain = estimatedGain, let validCI = ci {
+        let scientificStatus: ScientificMeasurementStatus = {
+            let technicalFailures = checks.filter { check in
+                !check.passed && (check.category == .cameraPerformance || check.category == .trackingLoss || check.category == .headMovement || check.category == .calibrationError)
+            }
+            if !technicalFailures.isEmpty {
+                return .invalid
+            }
+            let signalFailures = checks.filter { check in
+                !check.passed && check.category == .contaminatedSignal
+            }
+            if !signalFailures.isEmpty {
+                return .inconclusive
+            }
+            return .valid
+        }()
+
+        if scientificStatus == .valid, let validSlope = medianSlope, let validGain = estimatedGain, let validCI = ci {
             return OKNAnalysisResult(
                 mode: mode,
                 provenance: provenance,
+                scientificStatus: .valid,
                 didAbstain: false,
                 stoppedEarly: stoppedEarly,
                 recordingDurationSec: totalDuration,
@@ -1109,6 +1264,8 @@ public enum SignalMath {
                 totalFrames: totalCount,
                 validFrames: validFrameCount,
                 rejectedFrames: rejectedCount,
+                cadenceDiagnostics: cadenceDiagnostics,
+                artifactFlags: artifactFlags,
                 trackingNoiseDeg: trackingNoiseDeg,
                 calibrationRMSDeg: calibration.rmsErrorDeg,
                 gain: validGain,
@@ -1124,6 +1281,7 @@ public enum SignalMath {
             return OKNAnalysisResult(
                 mode: mode,
                 provenance: provenance,
+                scientificStatus: scientificStatus,
                 didAbstain: true,
                 stoppedEarly: stoppedEarly,
                 recordingDurationSec: totalDuration,
@@ -1131,6 +1289,8 @@ public enum SignalMath {
                 totalFrames: totalCount,
                 validFrames: validFrameCount,
                 rejectedFrames: rejectedCount,
+                cadenceDiagnostics: cadenceDiagnostics,
+                artifactFlags: artifactFlags,
                 trackingNoiseDeg: trackingNoiseDeg,
                 calibrationRMSDeg: calibration.rmsErrorDeg,
                 gain: nil,
@@ -1184,6 +1344,7 @@ public enum SignalMath {
         return OKNAnalysisResult(
             mode: mode,
             provenance: provenance,
+            scientificStatus: .invalid,
             didAbstain: true,
             stoppedEarly: false,
             recordingDurationSec: 0.0,
@@ -1191,6 +1352,24 @@ public enum SignalMath {
             totalFrames: samples.count,
             validFrames: 0,
             rejectedFrames: samples.count,
+            cadenceDiagnostics: AcquisitionCadenceDiagnostics(
+                meanFps: 0.0,
+                medianDtMs: 0.0,
+                cadenceJitterMs: 0.0,
+                minDtMs: 0.0,
+                maxDtMs: 0.0,
+                droppedFrameCount: 0,
+                droppedFrameRatio: 0.0,
+                nyquistBandwidthHz: 0.0,
+                isSamplingIrregular: true
+            ),
+            artifactFlags: ArtifactClassificationFlags(
+                blinkFramesCount: 0,
+                fastPhaseSaccadeFramesCount: 0,
+                rapidMotionUndersampledCount: 0,
+                headMovementExcursionsCount: 0,
+                postSaccadicBlankedCount: 0
+            ),
             trackingNoiseDeg: .nan,
             calibrationRMSDeg: calRMS,
             gain: nil,

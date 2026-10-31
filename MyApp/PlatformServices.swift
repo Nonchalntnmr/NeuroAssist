@@ -210,6 +210,9 @@ public struct PersistentMeasurementSession: Codable, Sendable, Equatable, Identi
     public let protocolModeRaw: String
     public let analysisVersion: String
     public let deviceModel: String
+    public let scientificStatusRaw: String
+    public let cadenceDiagnostics: AcquisitionCadenceDiagnostics?
+    public let artifactFlags: ArtifactClassificationFlags?
 
     // Calibration metrics
     public let calibrationAccepted: Bool
@@ -302,8 +305,11 @@ public struct PersistentMeasurementSession: Codable, Sendable, Equatable, Identi
             testCategory: testCategory,
             provenanceRaw: result.provenance.rawValue,
             protocolModeRaw: result.mode.rawValue,
-            analysisVersion: "NeuroAssist-SignalEngine-2.4.0",
+            analysisVersion: "NeuroAssist-SignalEngine-2.5.0-ScienceClaw",
             deviceModel: UIDevice.current.model,
+            scientificStatusRaw: result.scientificStatus.rawValue,
+            cadenceDiagnostics: result.cadenceDiagnostics,
+            artifactFlags: result.artifactFlags,
             calibrationAccepted: calibration?.isAccepted ?? false,
             calibrationRMSDeg: result.calibrationRMSDeg,
             calibrationSlope: calibration?.slope ?? 0.0,
@@ -338,6 +344,96 @@ public struct PersistentMeasurementSession: Codable, Sendable, Equatable, Identi
             locationTagDescription: locationTag,
             latitude: lat,
             longitude: lon
+        )
+    }
+}
+
+// MARK: - 3B. NEUROASSIST × CONTEXTUAL INTELLIGENCE (CI) SCIENTIFIC OBSERVATION CONTRACT
+public struct NeuroAssistCIObservation: Codable, Sendable, Equatable {
+    public let schemaVersion: String // "neuroassist.ci.observation/1.0"
+    public let sessionID: String
+    public let timestampISO8601: String
+    public let scientificStatus: String // "VALID", "INCONCLUSIVE", "INVALID"
+    public let protocolType: String // "OPTOKINETIC_NYSTAGMUS"
+    public let algorithmVersion: String
+    public let provenance: String // "LIVE_TRUEDEPTH", "RECORDED_SESSION", "SIMULATED"
+    public let deviceModel: String
+
+    // Measurement values (nil when scientificStatus != "VALID")
+    public let slowPhaseVelocityDegPerSec: Double?
+    public let oknGain: Double?
+    public let confidenceIntervalLowerDegPerSec: Double?
+    public let confidenceIntervalUpperDegPerSec: Double?
+    public let intervalHalfWidthDegPerSec: Double?
+    public let cleanWindowCount: Int
+
+    // Sampling Cadence Diagnostics
+    public let meanFps: Double
+    public let cadenceJitterMs: Double
+    public let minDtMs: Double
+    public let maxDtMs: Double
+    public let droppedFrames: Int
+    public let droppedRatio: Double
+    public let nyquistLimitHz: Double
+    public let isSamplingIrregular: Bool
+
+    // Quality Gates & Rejection Audit
+    public let passedQualityGatesCount: Int
+    public let totalQualityGatesCount: Int
+    public let allGatesPassed: Bool
+    public let primaryRejectionReason: String?
+    public let rejectionReasons: [String]
+    public let qualityGates: [QualityGateCheckRecord]
+
+    // Calibration Metadata
+    public let calibrationAccepted: Bool
+    public let calibrationRMSDeg: Double
+    public let calibrationSlope: Double
+    public let calibrationIntercept: Double
+    public let meanDistanceCm: Double
+
+    // Compact numerical eye-yaw trace (degrees)
+    public let compactYawTraceDeg: [Double]
+    public let compactYawTimeSec: [Double]
+
+    public static func from(session: PersistentMeasurementSession) -> NeuroAssistCIObservation {
+        let iso = ISO8601DateFormatter()
+        return NeuroAssistCIObservation(
+            schemaVersion: "neuroassist.ci.observation/1.0",
+            sessionID: session.id.uuidString,
+            timestampISO8601: iso.string(from: session.timestamp),
+            scientificStatus: session.scientificStatusRaw,
+            protocolType: "OPTOKINETIC_NYSTAGMUS",
+            algorithmVersion: session.analysisVersion,
+            provenance: session.provenanceRaw,
+            deviceModel: session.deviceModel,
+            slowPhaseVelocityDegPerSec: session.slowPhaseVelocityDegPerSec,
+            oknGain: session.oknGain,
+            confidenceIntervalLowerDegPerSec: session.confidenceIntervalLowerDegPerSec,
+            confidenceIntervalUpperDegPerSec: session.confidenceIntervalUpperDegPerSec,
+            intervalHalfWidthDegPerSec: session.intervalHalfWidthDegPerSec,
+            cleanWindowCount: session.cleanWindowCount,
+            meanFps: session.cadenceDiagnostics?.meanFps ?? session.frameRateFps,
+            cadenceJitterMs: session.cadenceDiagnostics?.cadenceJitterMs ?? 0.0,
+            minDtMs: session.cadenceDiagnostics?.minDtMs ?? 16.67,
+            maxDtMs: session.cadenceDiagnostics?.maxDtMs ?? 16.67,
+            droppedFrames: session.cadenceDiagnostics?.droppedFrameCount ?? 0,
+            droppedRatio: session.cadenceDiagnostics?.droppedFrameRatio ?? 0.0,
+            nyquistLimitHz: session.cadenceDiagnostics?.nyquistBandwidthHz ?? (session.frameRateFps * 0.5),
+            isSamplingIrregular: session.cadenceDiagnostics?.isSamplingIrregular ?? false,
+            passedQualityGatesCount: session.passedCheckCount,
+            totalQualityGatesCount: session.totalCheckCount,
+            allGatesPassed: session.passedCheckCount == session.totalCheckCount && !session.didAbstain,
+            primaryRejectionReason: session.primaryAbstainRootCause,
+            rejectionReasons: session.abstentionReasons,
+            qualityGates: session.qualityChecks,
+            calibrationAccepted: session.calibrationAccepted,
+            calibrationRMSDeg: session.calibrationRMSDeg,
+            calibrationSlope: session.calibrationSlope,
+            calibrationIntercept: session.calibrationIntercept,
+            meanDistanceCm: session.meanDistanceCm,
+            compactYawTraceDeg: session.compactYawTraceDeg,
+            compactYawTimeSec: session.compactYawTimeSec
         )
     }
 }
@@ -901,6 +997,26 @@ public final class PlatformServicesStore {
                 actionType: "EXPORT_JSON",
                 scopeOrTarget: "\(sessionsToExport.count) session(s)",
                 details: "Generated structured JSON export for user-controlled share sheet."
+            )
+            return url
+        } catch {
+            return nil
+        }
+    }
+
+    public func exportSessionAsCIObservationJSON(session: PersistentMeasurementSession) -> URL? {
+        let obs = NeuroAssistCIObservation.from(session: session)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        guard let data = try? encoder.encode(obs) else { return nil }
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("NeuroAssist_CI_Observation_\(session.id.uuidString.prefix(8)).json")
+        do {
+            try data.write(to: url, options: .atomic)
+            appendAudit(
+                actionType: "EXPORT_CI_OBSERVATION",
+                scopeOrTarget: session.id.uuidString.prefix(8).description,
+                details: "Exported versioned observation record for NeuroAssist x CI child integration."
             )
             return url
         } catch {
