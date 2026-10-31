@@ -426,7 +426,9 @@ class SkepticAgent(Agent):
             ev = board.add_evidence("head_motion", self.key, content)
             moved = (_finite(rate) and abs(rate) > HEAD_RATE) or (_finite(rng) and rng > HEAD_RANGE)
             out.append(board.post(rnd, self.key, "FINDING", "head_motion",
-                                  f"Head yaw drifts at {rate:+.2f} deg/s (range {rng:.2f}°)." if _finite(rate) else "No head channel.",
+                                  (f"Head yaw spans {rng:.2f}° during the recording"
+                                   f"{' (more than ' + str(HEAD_RANGE) + '°)' if rng > HEAD_RANGE else ''}; median window slope {rate:+.2f} deg/s.")
+                                  if _finite(rate) else "No head channel.",
                                   content, [ev.id]))
             if moved:
                 out.append(board.post(rnd, self.key, "EVIDENCE_REQUEST", "counterfactual",

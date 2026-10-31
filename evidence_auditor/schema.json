@@ -1,0 +1,157 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "evidence-auditor.observation/1",
+ "title": "Evidence Auditor observation",
+ "type": "object",
+ "required": [
+  "claims",
+  "evidence"
+ ],
+ "properties": {
+  "schema": {
+   "const": "evidence-auditor.observation/1"
+  },
+  "claims": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "statement"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "statement": {
+      "type": "string"
+     },
+     "type": {
+      "type": "string"
+     },
+     "evidence": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "requires": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "evidence": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "type": {
+      "type": "string"
+     },
+     "producer": {
+      "type": "string"
+     },
+     "content": {},
+     "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+     },
+     "quality": {
+      "enum": [
+       "ok",
+       "concern",
+       "fail"
+      ]
+     },
+     "provenance": {
+      "type": "object",
+      "properties": {
+       "label": {
+        "type": "string"
+       },
+       "source": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   }
+  },
+  "challenges": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "target_claim": {
+      "type": "string"
+     },
+     "by": {
+      "type": "string"
+     },
+     "reason": {
+      "type": "string"
+     },
+     "status": {
+      "enum": [
+       "open",
+       "resolved"
+      ]
+     }
+    }
+   }
+  },
+  "quality": {
+   "type": "object",
+   "properties": {
+    "status": {
+     "enum": [
+      "ok",
+      "concern",
+      "fail"
+     ]
+    },
+    "reasons": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ },
+ "$defs": {
+  "report": {
+   "$id": "evidence-auditor.report/1",
+   "type": "object",
+   "required": [
+    "schema",
+    "recommendation",
+    "supported",
+    "unsupported",
+    "missing_evidence"
+   ],
+   "properties": {
+    "recommendation": {
+     "enum": [
+      "REPORT",
+      "ABSTAIN",
+      "REMEASURE"
+     ]
+    }
+   }
+  }
+ }
+}

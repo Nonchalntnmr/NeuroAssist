@@ -158,6 +158,8 @@ def main(argv=None):
     p = ROOT / "benchmark" / "results" / f"{a.split}.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(res, indent=1))
+    summary = {k: v for k, v in res.items() if k != "per_case"}
+    (p.parent / f"{a.split}.summary.json").write_text(json.dumps(summary, indent=1))
     print(p)
 
 
