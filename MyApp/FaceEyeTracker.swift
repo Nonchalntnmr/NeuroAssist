@@ -92,7 +92,6 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         qos: .userInteractive
     )
     @ObservationIgnored nonisolated(unsafe) private var lastUIUpdateTimestamp: TimeInterval = 0.0
-    @ObservationIgnored nonisolated(unsafe) private var currentFaceAnchor: ARFaceAnchor? = nil
     private var recentTimestamps: [TimeInterval] = []
     @ObservationIgnored private var simulatorTask: Task<Void, Never>? = nil
 
@@ -186,22 +185,23 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         sessionErrorMessage = nil
         cameraPermissionDenied = false
         isInterrupted = false
+        // Leave emulation so synthetic samples never mix with real TrueDepth data
+        isSimulatorEmulation = false
         start()
     }
 
     func stop() {
         isStarting = false
-        #if targetEnvironment(simulator)
+        // Emulation can run on device too (enableEmulationMode), so always cancel it
         simulatorTask?.cancel()
         simulatorTask = nil
-        #else
+        #if !targetEnvironment(simulator)
         arSession.pause()
         #endif
         isRunning = false
         isRecording = false
         fps = 0.0
         faceTracked = false
-        currentFaceAnchor = nil
         recentTimestamps.removeAll()
         recentSamples.removeAll()
     }
@@ -298,10 +298,9 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         let callbackStart = CFAbsoluteTimeGetCurrent()
         let timestamp = frame.timestamp
         let ambientLux = Double(frame.lightEstimate?.ambientIntensity ?? 1000.0)
-        let faceAnchor = (frame.anchors.compactMap { $0 as? ARFaceAnchor }.first) ?? currentFaceAnchor
-        if let face = faceAnchor {
-            currentFaceAnchor = face
-        }
+        // Use only this frame's anchor; a cached anchor is a stale snapshot that would
+        // still report isTracked == true and be counted as a valid frame.
+        let faceAnchor = frame.anchors.compactMap { $0 as? ARFaceAnchor }.first
 
         let sample: EyeSample
         var lIris = CGPoint(x: -0.28, y: -0.08)
@@ -376,30 +375,6 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
                 callbackLatencyMs: callbackMs,
                 refreshLiveChart: shouldRefreshUI
             )
-        }
-    }
-
-    nonisolated func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        for anchor in anchors {
-            if let face = anchor as? ARFaceAnchor {
-                currentFaceAnchor = face
-            }
-        }
-    }
-
-    nonisolated func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-        for anchor in anchors {
-            if let face = anchor as? ARFaceAnchor {
-                currentFaceAnchor = face
-            }
-        }
-    }
-
-    nonisolated func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
-        for anchor in anchors {
-            if anchor is ARFaceAnchor {
-                currentFaceAnchor = nil
-            }
         }
     }
 
