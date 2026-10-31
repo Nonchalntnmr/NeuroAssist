@@ -70,7 +70,32 @@ public struct EyeSample: Sendable, Identifiable, Equatable, Codable {
     }
 
     public var isBlink: Bool {
-        blinkLeft > 0.5 || blinkRight > 0.5
+        // True physiological blink: bilateral closure > 0.65 or unilateral occlusion > 0.80
+        // Prevents downward-gaze eyelid droop (0.45-0.60) from triggering false 24% rejection
+        (blinkLeft > 0.65 && blinkRight > 0.65) || blinkLeft > 0.80 || blinkRight > 0.80
+    }
+
+    public enum FrameValidityReason: String, Sendable, Codable, CaseIterable {
+        case valid = "VALID"
+        case faceNotTracked = "FACE_NOT_TRACKED"
+        case blinkDetected = "BLINK_DETECTED"
+        case nonFiniteValue = "NON_FINITE_VALUE"
+
+        public var humanDescription: String {
+            switch self {
+            case .valid: return "Valid Gaze Sample"
+            case .faceNotTracked: return "Face Tracking Lost"
+            case .blinkDetected: return "Blink / Eyelid Occlusion"
+            case .nonFiniteValue: return "Sensor Numerical Anomaly"
+            }
+        }
+    }
+
+    public var validityReason: FrameValidityReason {
+        if !faceTracked { return .faceNotTracked }
+        if isBlink { return .blinkDetected }
+        if !rawYawDeg.isFinite || !timestamp.isFinite { return .nonFiniteValue }
+        return .valid
     }
 
     public var isValid: Bool {
