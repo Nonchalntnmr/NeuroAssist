@@ -89,7 +89,101 @@ struct LiveCheckView: View {
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(NeuroTheme.amber, lineWidth: 1))
                 }
 
-                if tracker.cameraPermissionDenied {
+                if tracker.isInterrupted {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "pause.circle.fill")
+                                .foregroundStyle(NeuroTheme.amber)
+                            Text("Camera Session Interrupted")
+                                .font(.system(.headline, design: .rounded).weight(.bold))
+                                .foregroundStyle(NeuroTheme.amber)
+                        }
+                        Text("Another app, phone call, or system service interrupted the TrueDepth camera stream.")
+                            .font(.system(.caption, design: .default))
+                            .foregroundStyle(NeuroTheme.textSecondary)
+                        HStack(spacing: 12) {
+                            Button {
+                                NeuroHaptics.selection()
+                                tracker.retryCamera()
+                            } label: {
+                                Text("Resume Camera")
+                                    .font(.system(.caption, design: .monospaced).weight(.bold))
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 10)
+                                    .background(NeuroTheme.amber)
+                                    .foregroundStyle(NeuroTheme.background)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            Button(action: onRunRecordedOrSimulatedWhenUnavailable) {
+                                Text("Use Demo Trace")
+                                    .font(.system(.caption, design: .monospaced).weight(.bold))
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 10)
+                                    .background(NeuroTheme.surface)
+                                    .foregroundStyle(NeuroTheme.teal)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                        }
+                    }
+                    .padding(16)
+                    .background(NeuroTheme.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .overlay(RoundedRectangle(cornerRadius: 14).stroke(NeuroTheme.amber, lineWidth: 1))
+                }
+
+                if let errorMsg = tracker.sessionErrorMessage {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundStyle(NeuroTheme.amber)
+                            Text("Camera / ARKit Error")
+                                .font(.system(.headline, design: .rounded).weight(.bold))
+                                .foregroundStyle(NeuroTheme.amber)
+                        }
+                        Text(errorMsg)
+                            .font(.system(.caption, design: .default))
+                            .foregroundStyle(NeuroTheme.textSecondary)
+                        HStack(spacing: 12) {
+                            Button {
+                                NeuroHaptics.selection()
+                                tracker.retryCamera()
+                            } label: {
+                                Text("Retry Camera")
+                                    .font(.system(.caption, design: .monospaced).weight(.bold))
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 10)
+                                    .background(NeuroTheme.amber)
+                                    .foregroundStyle(NeuroTheme.background)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            Button {
+                                NeuroHaptics.selection()
+                                tracker.enableEmulationMode()
+                            } label: {
+                                Text("Switch to Emulation")
+                                    .font(.system(.caption, design: .monospaced).weight(.bold))
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 10)
+                                    .background(NeuroTheme.surface)
+                                    .foregroundStyle(NeuroTheme.teal)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            Button(action: onRunRecordedOrSimulatedWhenUnavailable) {
+                                Text("Use Demo Trace")
+                                    .font(.system(.caption, design: .monospaced).weight(.bold))
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 10)
+                                    .background(NeuroTheme.surface)
+                                    .foregroundStyle(NeuroTheme.teal)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                        }
+                    }
+                    .padding(16)
+                    .background(NeuroTheme.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .overlay(RoundedRectangle(cornerRadius: 14).stroke(NeuroTheme.amber, lineWidth: 1))
+                } else if tracker.cameraPermissionDenied {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Camera Access Disabled")
                             .font(.system(.headline, design: .rounded).weight(.bold))
@@ -107,6 +201,18 @@ struct LiveCheckView: View {
                                     .padding(.vertical, 10)
                                     .background(NeuroTheme.amber)
                                     .foregroundStyle(NeuroTheme.background)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            Button {
+                                NeuroHaptics.selection()
+                                tracker.retryCamera()
+                            } label: {
+                                Text("Retry Camera")
+                                    .font(.system(.caption, design: .monospaced).weight(.bold))
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 10)
+                                    .background(NeuroTheme.surface)
+                                    .foregroundStyle(NeuroTheme.teal)
                                     .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
                             Button(action: onRunRecordedOrSimulatedWhenUnavailable) {
@@ -245,6 +351,26 @@ struct LiveCheckView: View {
                 }
                 .disabled(!readyToCalibrate)
 
+                if tracker.fps < 1.0 && !tracker.isSimulatorEmulation {
+                    HStack(spacing: 12) {
+                        Button {
+                            NeuroHaptics.selection()
+                            tracker.enableEmulationMode()
+                        } label: {
+                            Label("Switch to Emulation Mode", systemImage: "sparkles.tv")
+                                .font(.system(.caption, design: .monospaced).weight(.bold))
+                                .foregroundStyle(NeuroTheme.teal)
+                        }
+                        Spacer()
+                        Button(action: onRunRecordedOrSimulatedWhenUnavailable) {
+                            Text("Use Demo Trace")
+                                .font(.system(.caption, design: .monospaced).weight(.bold))
+                                .foregroundStyle(NeuroTheme.textSecondary)
+                        }
+                    }
+                    .padding(.horizontal, 4)
+                }
+
                 Text(NeuroTheme.researchFooter)
                     .font(.system(.caption2, design: .default))
                     .foregroundStyle(NeuroTheme.textSecondary)
@@ -269,7 +395,7 @@ private struct LiveFaceIrisGuideCard: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack {
-                Text("TRUEDEPTH IRIS & EYE-CORNER LOCK GUIDE")
+                Text("TRUEDEPTH EYE & FACE TRACKING GUIDE")
                     .font(.system(size: 10, weight: .bold, design: .monospaced))
                     .foregroundStyle(NeuroTheme.textSecondary)
                 Spacer()
@@ -277,7 +403,7 @@ private struct LiveFaceIrisGuideCard: View {
                     Circle()
                         .fill(tracker.irisLocked ? NeuroTheme.teal : NeuroTheme.amber)
                         .frame(width: 7, height: 7)
-                    Text(tracker.irisLocked ? "IRISES LOCKED" : "ACQUIRING IRISES")
+                    Text(tracker.irisLocked ? "EYES TRACKED" : "ACQUIRING EYES")
                         .font(.system(size: 10, weight: .bold, design: .monospaced))
                         .foregroundStyle(tracker.irisLocked ? NeuroTheme.teal : NeuroTheme.amber)
                 }
@@ -294,7 +420,43 @@ private struct LiveFaceIrisGuideCard: View {
                 ZStack {
                     // Live camera preview layer clipped to oval
                     Group {
-                        if tracker.isTrueDepthSupported && !tracker.cameraPermissionDenied {
+                        if tracker.isInterrupted {
+                            VStack(spacing: 8) {
+                                Image(systemName: "pause.circle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundStyle(NeuroTheme.amber)
+                                Text("CAMERA PAUSED")
+                                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                    .foregroundStyle(NeuroTheme.amber)
+                                Text("Interrupted")
+                                    .font(.system(size: 8, design: .monospaced))
+                                    .foregroundStyle(NeuroTheme.textSecondary)
+                            }
+                            .frame(width: ovalW, height: ovalH)
+                            .background(Color.black.opacity(0.85))
+                            .clipShape(Ellipse())
+                        } else if let errorMsg = tracker.sessionErrorMessage {
+                            VStack(spacing: 8) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundStyle(NeuroTheme.amber)
+                                Text("CAMERA ISSUE")
+                                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                    .foregroundStyle(NeuroTheme.amber)
+                                Text(errorMsg)
+                                    .font(.system(size: 8, design: .monospaced))
+                                    .foregroundStyle(NeuroTheme.textSecondary)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 8)
+                            }
+                            .frame(width: ovalW, height: ovalH)
+                            .background(Color.black.opacity(0.85))
+                            .clipShape(Ellipse())
+                        } else if tracker.cameraPermissionDenied {
+                            CameraPermissionDeniedMiniView(tracker: tracker)
+                                .frame(width: ovalW, height: ovalH)
+                                .clipShape(Ellipse())
+                        } else if tracker.isTrueDepthSupported {
                             #if !targetEnvironment(simulator)
                             ARCameraPreview(session: tracker.rawARSession)
                                 .frame(width: ovalW, height: ovalH)
@@ -305,10 +467,6 @@ private struct LiveFaceIrisGuideCard: View {
                                 .frame(width: ovalW, height: ovalH)
                                 .clipShape(Ellipse())
                             #endif
-                        } else if tracker.cameraPermissionDenied {
-                            CameraPermissionDeniedMiniView(tracker: tracker)
-                                .frame(width: ovalW, height: ovalH)
-                                .clipShape(Ellipse())
                         } else {
                             SimulatorCameraPlaceholderView(tracker: tracker)
                                 .frame(width: ovalW, height: ovalH)

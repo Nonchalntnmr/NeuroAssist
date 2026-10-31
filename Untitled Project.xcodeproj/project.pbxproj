@@ -114,9 +114,9 @@
 		000000000000000000000000 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
+				BuildIndependentTargetsInParallel = NO;
 				LastSwiftUpdateCheck = 2710;
-				LastUpgradeCheck = 2700;
+				LastUpgradeCheck = 2710;
 				TargetAttributes = {
 					000000000000000100000000 = {
 						CreatedOnToolsVersion = 26.3;
@@ -318,16 +318,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W528LQK34B;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = NeuroAssist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the front camera to measure eye movements. Video never leaves your phone and is never saved.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the TrueDepth camera to measure eye movements for cognitive and neurological wellness assessments. Camera data is processed exclusively on-device in real-time and is never recorded or transmitted.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NeuroAssist optionally attaches a contextual location snapshot to research sessions and safety check-ins with your explicit consent. Continuous tracking is never performed.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "it works ";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -366,13 +367,14 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W528LQK34B;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = NeuroAssist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the front camera to measure eye movements. Video never leaves your phone and is never saved.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the TrueDepth camera to measure eye movements for cognitive and neurological wellness assessments. Camera data is processed exclusively on-device in real-time and is never recorded or transmitted.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NeuroAssist optionally attaches a contextual location snapshot to research sessions and safety check-ins with your explicit consent. Continuous tracking is never performed.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "it works ";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;

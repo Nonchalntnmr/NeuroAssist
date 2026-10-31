@@ -317,6 +317,7 @@ struct ARCameraPreview: UIViewRepresentable {
     func makeUIView(context: Context) -> ARSCNView {
         let scnView = ARSCNView(frame: .zero)
         scnView.session = session
+        scnView.scene = SCNScene()
         scnView.automaticallyUpdatesLighting = true
         scnView.rendersCameraGrain = false
         scnView.autoenablesDefaultLighting = false
