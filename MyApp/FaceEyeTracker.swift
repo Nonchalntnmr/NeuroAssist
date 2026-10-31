@@ -42,6 +42,9 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     var currentRawYawDeg: Double { currentYawDeg }
     private(set) var blinkLeft: Double = 0.0
     private(set) var blinkRight: Double = 0.0
+    public var isBlink: Bool {
+        (blinkLeft > 0.65 && blinkRight > 0.65) || blinkLeft > 0.80 || blinkRight > 0.80
+    }
     private(set) var headYawDeg: Double = 0.0
     private(set) var headPitchDeg: Double = 0.0
     private(set) var distanceCm: Double = 0.0
@@ -50,6 +53,8 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     var frameRateFps: Double { fps }
     private(set) var droppedFrameCount: Int = 0
     private(set) var validSamplePercentage: Double = 100.0
+    private(set) var rejectionReasonCounts: [EyeSample.FrameValidityReason: Int] = [:]
+    private(set) var primaryRejectionReason: String? = nil
     private(set) var renderLatencyMs: Double = 1.2
     private(set) var signalProcessingLatencyMs: Double = 0.4
     private(set) var isHeadSteady: Bool = false
@@ -282,6 +287,27 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
             activeRecordingMirror.append(sample)
         }
 
+        // Maintain full 60 Hz rolling 5-second window for true gaze sampling statistics
+        recentSamples.append(sample)
+        let fiveSecCutoff = sample.timestamp - 5.0
+        if let idx = recentSamples.firstIndex(where: { $0.timestamp >= fiveSecCutoff }), idx > 0 {
+            recentSamples.removeFirst(idx)
+        }
+
+        if !recentSamples.isEmpty {
+            var counts: [EyeSample.FrameValidityReason: Int] = [:]
+            var validCount = 0
+            for s in recentSamples {
+                let reason = s.validityReason
+                counts[reason, default: 0] += 1
+                if reason == .valid { validCount += 1 }
+            }
+            rejectionReasonCounts = counts
+            validSamplePercentage = (Double(validCount) / Double(recentSamples.count)) * 100.0
+            let invalidCounts = counts.filter { $0.key != .valid }.sorted { $0.value > $1.value }
+            primaryRejectionReason = invalidCounts.first?.key.humanDescription
+        }
+
         guard refreshLiveChart else { return }
         let uiStart = CFAbsoluteTimeGetCurrent()
 
@@ -307,21 +333,10 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
             CGPoint(x: rightIris.x + 0.11, y: rightIris.y + 0.01)
         ]
 
-        let nowLocked = sample.faceTracked && sample.blinkLeft <= 0.5 && sample.blinkRight <= 0.5
+        let nowLocked = sample.faceTracked && !sample.isBlink
         irisLocked = nowLocked
         if nowLocked && !wasLocked {
             NeuroHaptics.selection()
-        }
-
-        recentSamples.append(sample)
-        let fiveSecCutoff = sample.timestamp - 5.0
-        if let idx = recentSamples.firstIndex(where: { $0.timestamp >= fiveSecCutoff }), idx > 0 {
-            recentSamples.removeFirst(idx)
-        }
-
-        if !recentSamples.isEmpty {
-            let validCount = recentSamples.filter(\.isValid).count
-            validSamplePercentage = (Double(validCount) / Double(recentSamples.count)) * 100.0
         }
 
         let oneSecCutoff = sample.timestamp - 1.0

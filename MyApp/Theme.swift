@@ -146,7 +146,7 @@ struct RealTimePerformanceHUD: View {
     }
 }
 
-private struct HUDMetric: View {
+struct HUDMetric: View {
     let label: String
     let value: String
     let isGood: Bool
