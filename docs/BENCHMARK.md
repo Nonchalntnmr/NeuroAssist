@@ -98,3 +98,16 @@ AGREE_TOL 0.05 deg/s, TIMING_TINY 0.05, MAX_GAP_S 1.0.
   abstains or is biased. Moved to ≥2.6 deg/s (see ENGINE_BLINDSPOT.md).
 
 The freeze is the git commit titled "Freeze benchmark protocol and thresholds before held-out run".
+
+## Changes after the freeze (none affect a decision)
+
+`benchmark/FREEZE.sha256` hashes the code as frozen. Two files have changed since; neither changes
+scoring or any decision.
+
+- **P1** `naci/collective.py`: the Skeptic's head-motion message now leads with the head range it acts
+  on, instead of the median window slope, which read as contradicting Signal Quality. Text only. The
+  held-out suite was re-run after the change: all 1,620 system decisions are identical.
+- **P2** `naci/benchmark.py`: also writes `<split>.summary.json` (results without per-case rows) for the
+  website.
+
+The held-out results in `benchmark/results/heldout.json` are from the single run at commit `c3e518f`.
