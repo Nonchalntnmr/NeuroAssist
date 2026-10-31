@@ -1,0 +1,94 @@
+{
+  "engine": "neurocore-0.4.0",
+  "case_types": [
+    "clean",
+    "tracking_artifact",
+    "missing_frames",
+    "irregular_timestamps",
+    "insufficient_baseline",
+    "misleading_change",
+    "true_change",
+    "conflicting_history",
+    "change_with_incidental_artifact"
+  ],
+  "label": "SYNTHETIC",
+  "suites": {
+    "dev": {
+      "split": "dev",
+      "salt": 7,
+      "perType": 12,
+      "n": 108,
+      "sha256": "309d20c97a1ad6262e41283f64e2fef19cc20d4e5b7748b94a40507173ad3757",
+      "truth_by_type": {
+        "clean": {
+          "NO_CHANGE": 12
+        },
+        "tracking_artifact": {
+          "ABSTAIN": 12
+        },
+        "missing_frames": {
+          "ABSTAIN": 12
+        },
+        "irregular_timestamps": {
+          "ABSTAIN": 12
+        },
+        "insufficient_baseline": {
+          "NO_BASELINE": 12
+        },
+        "misleading_change": {
+          "NO_CHANGE": 11,
+          "ABSTAIN": 1
+        },
+        "true_change": {
+          "CHANGE": 12
+        },
+        "conflicting_history": {
+          "NO_CHANGE": 12
+        },
+        "change_with_incidental_artifact": {
+          "CHANGE": 11,
+          "ABSTAIN": 1
+        }
+      }
+    },
+    "heldout": {
+      "split": "heldout",
+      "salt": 2026,
+      "perType": 30,
+      "n": 270,
+      "sha256": "4030734b652f1435d40ad6640511127d73943580c11db3d705747d428df3ec46",
+      "truth_by_type": {
+        "clean": {
+          "NO_CHANGE": 30
+        },
+        "tracking_artifact": {
+          "ABSTAIN": 30
+        },
+        "missing_frames": {
+          "ABSTAIN": 30
+        },
+        "irregular_timestamps": {
+          "ABSTAIN": 30
+        },
+        "insufficient_baseline": {
+          "NO_BASELINE": 30
+        },
+        "misleading_change": {
+          "NO_CHANGE": 29,
+          "ABSTAIN": 1
+        },
+        "true_change": {
+          "CHANGE": 30
+        },
+        "conflicting_history": {
+          "NO_CHANGE": 29,
+          "ABSTAIN": 1
+        },
+        "change_with_incidental_artifact": {
+          "CHANGE": 29,
+          "ABSTAIN": 1
+        }
+      }
+    }
+  }
+}

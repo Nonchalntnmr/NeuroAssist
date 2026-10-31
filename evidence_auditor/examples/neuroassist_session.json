@@ -1,0 +1,306 @@
+{
+ "schema": "evidence-auditor.observation/1",
+ "_comment": "SYNTHETIC. Exported from a NeuroAssist x CI run (dev-tracking_artifact-1): a head-coupled tracking slip passed NeuroAssist's gate; the Skeptic vetoed it.",
+ "claims": [
+  {
+   "id": "msg_006",
+   "statement": "No change from personal baseline: +7.16 deg/s vs +4.47 \u00b1 0.85 (n=6), z = +2.98.",
+   "type": "NO_CHANGE",
+   "evidence": [
+    "ev_e6b686d8a08f6007",
+    "ev_f407e9e099109a09",
+    "ev_9eaf23239b5758d5",
+    "ev_f3458d7fd899cb87",
+    "ev_46f7c36ae18fa98b"
+   ],
+   "requires": [
+    "device_record",
+    "quality_report",
+    "baseline",
+    "counterfactual"
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "ev_e6b686d8a08f6007",
+   "type": "device_record",
+   "producer": "neuroassist",
+   "sha256": "e6b686d8a08f6007a765dbaa3a4ee1e1ea3621d2dacd063d48134f894fe7e041",
+   "quality": "ok",
+   "provenance": {
+    "label": "SYNTHETIC",
+    "source": "neuroassist-simulator",
+    "engine": "neurocore-0.4.0",
+    "generator": {
+     "seed": 7019130,
+     "true_spv": 4.533,
+     "noise": 0.1136,
+     "corruption": {
+      "head": {
+       "rate": 2.6925623134244234,
+       "amp": 1.5772608240600676,
+       "back": 0.02
+      }
+     }
+    }
+   },
+   "content": {
+    "schema": "naci.session/1",
+    "session_id": "subj-dev-1-1-target",
+    "subject_id": "subj-dev-1-1",
+    "recorded_at": "2026-09-21T15:00:00Z",
+    "protocol": "FIXATION",
+    "provenance": {
+     "label": "SYNTHETIC",
+     "source": "neuroassist-simulator",
+     "engine": "neurocore-0.4.0",
+     "generator": {
+      "seed": 7019130,
+      "true_spv": 4.533,
+      "noise": 0.1136,
+      "corruption": {
+       "head": {
+        "rate": 2.6925623134244234,
+        "amp": 1.5772608240600676,
+        "back": 0.02
+       }
+      }
+     }
+    },
+    "measurement": {
+     "status": "MEASURED",
+     "metric": "SLOW_PHASE_VELOCITY",
+     "unit": "deg/s",
+     "value": 7.1636,
+     "ci_low": 6.2869,
+     "ci_high": 7.4819,
+     "windows": 15
+    },
+    "quality": {
+     "valid_frac": 0.9267,
+     "fps": 30.03,
+     "noise_deg": 0.0993,
+     "residual_ratio": 1.0369,
+     "checks": [
+      {
+       "id": "valid",
+       "label": "Valid frames",
+       "show": "93%",
+       "rule": "\u2265 75%",
+       "ok": true
+      },
+      {
+       "id": "fps",
+       "label": "Frame rate",
+       "show": "30 fps",
+       "rule": "\u2265 20 fps",
+       "ok": true
+      },
+      {
+       "id": "noise",
+       "label": "Tracking noise",
+       "show": "0.10\u00b0",
+       "rule": "\u2264 0.45\u00b0",
+       "ok": true
+      },
+      {
+       "id": "chunks",
+       "label": "Clean slow-phase windows",
+       "show": "15",
+       "rule": "\u2265 8",
+       "ok": true
+      },
+      {
+       "id": "linearity",
+       "label": "Slow-phase fit (residual / noise)",
+       "show": "1.04\u00d7",
+       "rule": "\u2264 1.25\u00d7",
+       "ok": true
+      },
+      {
+       "id": "ci",
+       "label": "Uncertainty (95% half-width)",
+       "show": "\u00b10.60 deg/s",
+       "rule": "\u2264 1.5 deg/s",
+       "ok": true
+      }
+     ],
+     "abstain_reasons": []
+    }
+   }
+  },
+  {
+   "id": "ev_f407e9e099109a09",
+   "type": "quality_report",
+   "producer": "signal_quality",
+   "sha256": "f407e9e099109a0941c2246f44263096bfbbc962c47ce3a6aa75cce185d60c4d",
+   "quality": "concern",
+   "provenance": null,
+   "content": {
+    "verdict": "CONCERN",
+    "flags": [
+     {
+      "code": "HEAD_COUPLING",
+      "severity": "concern",
+      "detail": "head yaw moves at +2.70 deg/s inside the slow-phase windows; gaze estimate may include it"
+     }
+    ],
+    "recompute": {
+     "passed": true,
+     "est": 7.1636,
+     "ci_hw": 0.5975,
+     "windows": 15,
+     "agrees_with_device": true
+    },
+    "timing": {
+     "median_dt_ms": 33.3,
+     "tiny_frac": 0.0,
+     "cv": 0.002
+    },
+    "gaps": {
+     "valid_frac": 0.9267,
+     "longest_gap_s": 0.3
+    },
+    "head_rate_deg_s": 2.697
+   }
+  },
+  {
+   "id": "ev_9eaf23239b5758d5",
+   "type": "baseline",
+   "producer": "contextual_memory",
+   "sha256": "9eaf23239b5758d5b4e1aba17154973e6f3abed6c8d7eb54125102f97e767a28",
+   "quality": "ok",
+   "provenance": null,
+   "content": {
+    "n": 6,
+    "median": 4.46675,
+    "spread": 0.85190196,
+    "sufficient": true,
+    "used": [
+     {
+      "session_id": "subj-dev-1-1-s1",
+      "value": 5.3094,
+      "recorded_at": "2026-08-10T15:00:00+00:00",
+      "label": "SYNTHETIC",
+      "engine": "neurocore-0.4.0",
+      "trust": "imported",
+      "memory_item": "mem_e02a1320de4a43e1a1f0"
+     },
+     {
+      "session_id": "subj-dev-1-1-s2",
+      "value": 3.7467,
+      "recorded_at": "2026-08-16T15:00:00+00:00",
+      "label": "SYNTHETIC",
+      "engine": "neurocore-0.4.0",
+      "trust": "imported",
+      "memory_item": "mem_b1708746ef0243c98674"
+     },
+     {
+      "session_id": "subj-dev-1-1-s3",
+      "value": 4.6363,
+      "recorded_at": "2026-08-22T15:00:00+00:00",
+      "label": "SYNTHETIC",
+      "engine": "neurocore-0.4.0",
+      "trust": "imported",
+      "memory_item": "mem_1e6d9f7dc63a4a908b5a"
+     },
+     {
+      "session_id": "subj-dev-1-1-s4",
+      "value": 4.8959,
+      "recorded_at": "2026-08-28T15:00:00+00:00",
+      "label": "SYNTHETIC",
+      "engine": "neurocore-0.4.0",
+      "trust": "imported",
+      "memory_item": "mem_518efc9b903949dcabab"
+     },
+     {
+      "session_id": "subj-dev-1-1-s5",
+      "value": 3.5033,
+      "recorded_at": "2026-09-03T15:00:00+00:00",
+      "label": "SYNTHETIC",
+      "engine": "neurocore-0.4.0",
+      "trust": "imported",
+      "memory_item": "mem_ce8f6ec77256424ebc3b"
+     },
+     {
+      "session_id": "subj-dev-1-1-s6",
+      "value": 4.2972,
+      "recorded_at": "2026-09-09T15:00:00+00:00",
+      "label": "SYNTHETIC",
+      "engine": "neurocore-0.4.0",
+      "trust": "imported",
+      "memory_item": "mem_4abaeb1c8fa84c2a8477"
+     }
+    ],
+    "excluded": [],
+    "conflicts": [],
+    "conflicted_items": [],
+    "min_n": 3,
+    "source": "CI TemporalMemory.valid_at + trust ranks + conflict ledger"
+   }
+  },
+  {
+   "id": "ev_f5dc71ae3bc43f82",
+   "type": "head_motion",
+   "producer": "skeptic",
+   "sha256": "f5dc71ae3bc43f825229ab68946aebbbeaa110e1204b9009c92f69fa758befda",
+   "quality": "ok",
+   "provenance": null,
+   "content": {
+    "head_rate_deg_s": -0.271,
+    "head_range_deg": 1.702
+   }
+  },
+  {
+   "id": "ev_46f7c36ae18fa98b",
+   "type": "counterfactual",
+   "producer": "signal_quality",
+   "sha256": "46f7c36ae18fa98b99db53cd1e898087f87479b7d57ffd7e021692cab613180d",
+   "quality": "ok",
+   "provenance": null,
+   "content": {
+    "request": "head_corrected",
+    "available": true,
+    "method": "gaze minus head yaw (gain 1), then the NeuroAssist engine",
+    "passed": true,
+    "est": 4.4353,
+    "ci_hw": 0.2935,
+    "windows": 21
+   }
+  },
+  {
+   "id": "ev_f3458d7fd899cb87",
+   "type": "analysis",
+   "producer": "physiology",
+   "sha256": "f3458d7fd899cb87fdda721a7bbb1d03279bef0457e8227d8bee2bd078f137af",
+   "quality": "ok",
+   "provenance": null,
+   "content": {
+    "type": "NO_CHANGE",
+    "value": 7.1636,
+    "ci_hw": 0.5975000000000001,
+    "baseline_median": 4.46675,
+    "baseline_spread": 0.85190196,
+    "baseline_n": 6,
+    "z": 2.981
+   }
+  }
+ ],
+ "challenges": [
+  {
+   "id": "msg_008",
+   "target_claim": "msg_006",
+   "by": "skeptic",
+   "reason": "This claim rests on a number that a tracking artifact explains.",
+   "status": "open"
+  }
+ ],
+ "quality": {
+  "status": "fail",
+  "reasons": [
+   "skeptic: Not robust: removing head motion moves the estimate by 2.73 deg/s (limit 0.60). A tracking artifact explains the number."
+  ]
+ },
+ "_expect": "REMEASURE"
+}

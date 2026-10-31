@@ -1,0 +1,106 @@
+{
+ "schema": "evidence-auditor.observation/1",
+ "_comment": "Illustrative, invented example from another domain. A design team claims a variant binds tighter; one replicate plate failed QC and a reviewer challenged the second claim.",
+ "claims": [
+  {
+   "id": "c_kd",
+   "statement": "Variant V12 binds target T with Kd 4.1 nM (95% CI 3.2-5.3), 3 replicates.",
+   "type": "affinity",
+   "evidence": [
+    "e_spr",
+    "e_qc1"
+   ],
+   "requires": [
+    "assay",
+    "qc"
+   ]
+  },
+  {
+   "id": "c_better",
+   "statement": "V12 binds tighter than wild type.",
+   "type": "comparison",
+   "evidence": [
+    "e_spr",
+    "e_wt",
+    "e_qc2"
+   ],
+   "requires": [
+    "assay",
+    "reference",
+    "qc"
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "id": "e_spr",
+   "type": "assay",
+   "producer": "assay-agent",
+   "content": {
+    "method": "SPR",
+    "kd_nM": 4.1,
+    "ci": [
+     3.2,
+     5.3
+    ],
+    "replicates": 3
+   },
+   "sha256": "ce5c7c947b72390029f2a05b2a70f6ea44b61f940026f3fbe4017673ffcf5aaf",
+   "provenance": {
+    "label": "REAL",
+    "source": "instrument:biacore-01"
+   }
+  },
+  {
+   "id": "e_wt",
+   "type": "reference",
+   "producer": "memory-agent",
+   "content": {
+    "method": "SPR",
+    "kd_nM": 9.8,
+    "replicates": 1
+   },
+   "sha256": "5f0471ef0071630524fc46fef22032ba3ceacfff179042181f84d808536f5977",
+   "provenance": {
+    "label": "PRERECORDED",
+    "source": "2025 notebook export"
+   }
+  },
+  {
+   "id": "e_qc1",
+   "type": "qc",
+   "producer": "qc-agent",
+   "content": {
+    "plate": 1,
+    "reference_drift_pct": 2.1,
+    "pass": true
+   },
+   "sha256": "b7f49b59698cadc8375f2edf6566d107135a5d512f5e6b7bb2c54c006d4cd44d"
+  },
+  {
+   "id": "e_qc2",
+   "type": "qc",
+   "producer": "qc-agent",
+   "content": {
+    "plate": 2,
+    "reference_drift_pct": 14.0,
+    "pass": false
+   },
+   "sha256": "e687f6d8240d159c22faaa8ee48af17f97aaf9df69a590f5c5e0f6edac0288b8",
+   "quality": "fail"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "ch1",
+   "target_claim": "c_better",
+   "by": "skeptic-agent",
+   "reason": "wild-type value is a single replicate from a different instrument",
+   "status": "open"
+  }
+ ],
+ "quality": {
+  "status": "ok"
+ },
+ "_expect": "REPORT"
+}
