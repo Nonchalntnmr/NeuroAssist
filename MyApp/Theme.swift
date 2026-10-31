@@ -1,5 +1,7 @@
 import SwiftUI
 import UIKit
+import ARKit
+import SceneKit
 
 enum NeuroTheme {
     // Exact specified palette:
@@ -92,7 +94,7 @@ struct ProvenanceWatermarkBanner: View {
     var body: some View {
         if provenance != .liveCamera {
             HStack(spacing: 8) {
-                Image(systemName: provenance == .simulated ? "sparkles.tv" : "waveform.Badge.magnifyingglass")
+                Image(systemName: provenance == .simulated ? "sparkles.tv" : "waveform.badge.magnifyingglass")
                     .font(.system(size: 12, weight: .bold))
                 Text(provenance.rawValue)
                     .font(.system(size: 11, weight: .heavy, design: .monospaced))
@@ -300,5 +302,127 @@ enum ResearchCSVExporter {
         } catch {
             return nil
         }
+    }
+}
+
+// MARK: - Live TrueDepth Front Camera Feed & Emulation UI
+
+struct ARCameraPreview: UIViewRepresentable {
+    let session: ARSession
+
+    init(session: ARSession) {
+        self.session = session
+    }
+
+    func makeUIView(context: Context) -> ARSCNView {
+        let scnView = ARSCNView(frame: .zero)
+        scnView.session = session
+        scnView.automaticallyUpdatesLighting = true
+        scnView.rendersCameraGrain = false
+        scnView.autoenablesDefaultLighting = false
+        scnView.backgroundColor = .black
+        return scnView
+    }
+
+    func updateUIView(_ uiView: ARSCNView, context: Context) {
+        if uiView.session !== session {
+            uiView.session = session
+        }
+    }
+}
+
+struct SimulatorCameraPlaceholderView: View {
+    let tracker: FaceEyeTracker
+    @State private var scanLineY: CGFloat = 0.0
+
+    init(tracker: FaceEyeTracker) {
+        self.tracker = tracker
+    }
+
+    var body: some View {
+        GeometryReader { geo in
+            let w = geo.size.width
+            let h = geo.size.height
+
+            ZStack {
+                LinearGradient(
+                    colors: [Color(red: 0.06, green: 0.10, blue: 0.18), Color(red: 0.02, green: 0.04, blue: 0.08)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+
+                Image(systemName: "faceid")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: min(w * 0.45, 80), height: min(h * 0.45, 80))
+                    .foregroundStyle(tracker.faceTracked ? NeuroTheme.teal.opacity(0.45) : NeuroTheme.textSecondary.opacity(0.25))
+
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            colors: [.clear, NeuroTheme.teal.opacity(0.4), .clear],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .frame(width: w, height: 14)
+                    .position(x: w * 0.5, y: scanLineY)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
+                            scanLineY = h
+                        }
+                    }
+
+                VStack {
+                    Spacer()
+                    HStack(spacing: 5) {
+                        Circle()
+                            .fill(tracker.isRunning ? NeuroTheme.teal : NeuroTheme.amber)
+                            .frame(width: 5, height: 5)
+                        Text(tracker.isSimulatorEmulation ? "SIMULATOR ACTIVE · 60 HZ" : "ACQUIRING FEED")
+                            .font(.system(size: 8, weight: .bold, design: .monospaced))
+                            .foregroundStyle(NeuroTheme.textSecondary)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.black.opacity(0.8))
+                    .clipShape(Capsule())
+                    .padding(.bottom, 6)
+                }
+            }
+        }
+    }
+}
+
+struct CameraPermissionDeniedMiniView: View {
+    let tracker: FaceEyeTracker
+
+    init(tracker: FaceEyeTracker) {
+        self.tracker = tracker
+    }
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "camera.fill.badge.ellipsis")
+                .font(.system(size: 24, weight: .light))
+                .foregroundStyle(NeuroTheme.amber)
+            Text("Camera Access Disabled")
+                .font(.system(size: 11, weight: .bold, design: .rounded))
+                .foregroundStyle(NeuroTheme.textPrimary)
+            Button {
+                tracker.openSettings()
+            } label: {
+                Text("Open Settings")
+                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(NeuroTheme.amber)
+                    .foregroundStyle(.black)
+                    .clipShape(Capsule())
+            }
+        }
+        .padding(8)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(NeuroTheme.surface)
     }
 }

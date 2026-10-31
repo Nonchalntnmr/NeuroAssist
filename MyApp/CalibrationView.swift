@@ -119,6 +119,9 @@ struct CalibrationView: View {
                 }
             }
             .onAppear {
+                if !tracker.isRunning {
+                    tracker.start()
+                }
                 startPositioningMonitor(usableHalfWidthPt: usableHalfWidthPt)
             }
             .onDisappear {
@@ -178,7 +181,7 @@ struct CalibrationView: View {
 
     private func positioningView(usableHalfWidthPt: CGFloat) -> some View {
         VStack(spacing: 24) {
-            // Calm Face Guide Oval
+            // Calm Face Guide Oval with Live TrueDepth Camera Preview
             ZStack {
                 // Ambient pulsating ring when ready
                 if isPositioningReady {
@@ -189,17 +192,37 @@ struct CalibrationView: View {
                         .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: isPositioningReady)
                 }
 
-                // Main Face Oval Guide
+                // Live Camera Preview Feed inside Face Oval
+                Group {
+                    if tracker.isTrueDepthSupported && !tracker.cameraPermissionDenied {
+                        #if !targetEnvironment(simulator)
+                        ARCameraPreview(session: tracker.rawARSession)
+                            .frame(width: 160, height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 80))
+                            .overlay(Color.black.opacity(0.15))
+                        #else
+                        SimulatorCameraPlaceholderView(tracker: tracker)
+                            .frame(width: 160, height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 80))
+                        #endif
+                    } else if tracker.cameraPermissionDenied {
+                        CameraPermissionDeniedMiniView(tracker: tracker)
+                            .frame(width: 160, height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 80))
+                    } else {
+                        SimulatorCameraPlaceholderView(tracker: tracker)
+                            .frame(width: 160, height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 80))
+                    }
+                }
+
+                // Main Face Oval Guide Outline
                 RoundedRectangle(cornerRadius: 80)
                     .stroke(
                         isPositioningReady ? NeuroTheme.teal : NeuroTheme.border,
                         lineWidth: isPositioningReady ? 3.0 : 1.5
                     )
                     .frame(width: 160, height: 220)
-                    .background(
-                        RoundedRectangle(cornerRadius: 80)
-                            .fill(NeuroTheme.surface.opacity(0.5))
-                    )
 
                 // Face Lock & Iris Center Indicator
                 if tracker.faceTracked {

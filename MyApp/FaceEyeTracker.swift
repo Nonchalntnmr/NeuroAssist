@@ -3,6 +3,7 @@ import ARKit
 import CoreMotion
 import Observation
 import simd
+import UIKit
 
 /// Dedicated serial background pipeline that stores recorded samples off the MainActor
 /// and off ARKit's callback thread.
@@ -35,6 +36,9 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     private(set) var isTrueDepthSupported: Bool = ARFaceTrackingConfiguration.isSupported
     private(set) var isRunning: Bool = false
     private(set) var cameraPermissionDenied: Bool = false
+    private(set) var sessionErrorMessage: String? = nil
+    private(set) var isInterrupted: Bool = false
+    private(set) var isSimulatorEmulation: Bool = false
 
     // Live telemetry (throttled ~20 Hz for calm UI rendering while recording stays full 60 Hz)
     private(set) var faceTracked: Bool = false
@@ -80,12 +84,15 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     private var activeRecordingMirror: [EyeSample] = []
 
     @ObservationIgnored private let arSession = ARSession()
+    public var rawARSession: ARSession { arSession }
+
     @ObservationIgnored private let acquisitionQueue = DispatchQueue(
         label: "com.neuroassist.arkit.acquisition",
         qos: .userInteractive
     )
     @ObservationIgnored nonisolated(unsafe) private var lastUIUpdateTimestamp: TimeInterval = 0.0
     private var recentTimestamps: [TimeInterval] = []
+    @ObservationIgnored private var simulatorTask: Task<Void, Never>? = nil
 
     override init() {
         super.init()
@@ -107,13 +114,29 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     }
 
     func start() {
-        isTrueDepthSupported = ARFaceTrackingConfiguration.isSupported
         thermalState = ProcessInfo.processInfo.thermalState
-        guard isTrueDepthSupported else { return }
+
+        #if targetEnvironment(simulator)
+        isSimulatorEmulation = true
+        isTrueDepthSupported = true
+        cameraPermissionDenied = false
+        isRunning = true
+        startSimulatorEmulation()
+        return
+        #else
+        isTrueDepthSupported = ARFaceTrackingConfiguration.isSupported
+        guard isTrueDepthSupported else {
+            // Non-TrueDepth hardware (older device) - run emulation so app remains functional
+            isSimulatorEmulation = true
+            isRunning = true
+            startSimulatorEmulation()
+            return
+        }
 
         let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
         switch authStatus {
         case .authorized:
+            cameraPermissionDenied = false
             launchARSession()
         case .notDetermined:
             Task { @MainActor [weak self] in
@@ -131,6 +154,7 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         @unknown default:
             break
         }
+        #endif
     }
 
     private func launchARSession() {
@@ -142,9 +166,61 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     }
 
     func stop() {
+        simulatorTask?.cancel()
+        simulatorTask = nil
         arSession.pause()
         isRunning = false
         isRecording = false
+    }
+
+    func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    private func startSimulatorEmulation() {
+        simulatorTask?.cancel()
+        simulatorTask = Task { @MainActor [weak self] in
+            let startTime = CACurrentMediaTime()
+            while !Task.isCancelled {
+                guard let self else { break }
+                let t = CACurrentMediaTime() - startTime
+                let timestamp = CACurrentMediaTime()
+
+                // Realistic subtle gaze micro-movement + steady head at 32 cm
+                let simulatedYaw = sin(t * 1.2) * 0.35
+                let simulatedDist = 31.5 + sin(t * 0.8) * 0.5
+                let sample = EyeSample(
+                    timestamp: timestamp,
+                    rawYawDeg: simulatedYaw,
+                    faceTracked: true,
+                    blinkLeft: 0.05,
+                    blinkRight: 0.05,
+                    headYawDeg: 0.1,
+                    headPitchDeg: -0.2,
+                    distanceCm: simulatedDist,
+                    ambientLightLux: 500.0
+                )
+
+                let buffer = self.bufferActor
+                Task {
+                    await buffer.append(sample)
+                }
+
+                let leftIris = CGPoint(x: -0.28, y: -0.08)
+                let rightIris = CGPoint(x: 0.28, y: -0.08)
+
+                self.ingestSample(
+                    sample,
+                    leftIris: leftIris,
+                    rightIris: rightIris,
+                    callbackLatencyMs: 0.3,
+                    refreshLiveChart: true
+                )
+
+                try? await Task.sleep(nanoseconds: 16_666_667) // 60 Hz
+            }
+        }
     }
 
     func beginRecording() {
@@ -255,6 +331,31 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
                 callbackLatencyMs: callbackMs,
                 refreshLiveChart: shouldRefreshUI
             )
+        }
+    }
+
+    // MARK: - ARSessionObserver
+
+    nonisolated func session(_ session: ARSession, didFailWithError error: Error) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            self.sessionErrorMessage = error.localizedDescription
+            if let arError = error as? ARError, arError.code == .cameraUnauthorized {
+                self.cameraPermissionDenied = true
+            }
+        }
+    }
+
+    nonisolated func sessionWasInterrupted(_ session: ARSession) {
+        Task { @MainActor [weak self] in
+            self?.isInterrupted = true
+        }
+    }
+
+    nonisolated func sessionInterruptionEnded(_ session: ARSession) {
+        Task { @MainActor [weak self] in
+            self?.isInterrupted = false
+            self?.launchARSession()
         }
     }
 
