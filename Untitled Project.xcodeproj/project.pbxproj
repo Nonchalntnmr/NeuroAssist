@@ -328,6 +328,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = NeuroAssist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the front camera to measure eye movements. Video never leaves your phone and is never saved.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NeuroAssist optionally attaches a contextual location snapshot to research sessions and safety check-ins with your explicit consent. Continuous tracking is never performed.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "it works ";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -372,6 +373,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = NeuroAssist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the front camera to measure eye movements. Video never leaves your phone and is never saved.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NeuroAssist optionally attaches a contextual location snapshot to research sessions and safety check-ins with your explicit consent. Continuous tracking is never performed.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "it works ";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
