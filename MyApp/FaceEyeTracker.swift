@@ -2,8 +2,12 @@ import Foundation
 import ARKit
 import CoreMotion
 import Observation
+import os
 import simd
 import UIKit
+
+/// Camera pipeline diagnostics (visible in the Xcode console / Console.app, subsystem "neuroassist").
+let cameraLog = Logger(subsystem: "neuroassist", category: "camera")
 
 /// Dedicated serial background pipeline that stores recorded samples off the MainActor
 /// and off ARKit's callback thread.
@@ -92,6 +96,9 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         qos: .userInteractive
     )
     @ObservationIgnored nonisolated(unsafe) private var lastUIUpdateTimestamp: TimeInterval = 0.0
+    // Diagnostics counters; only touched on the acquisition queue after launch resets them
+    @ObservationIgnored nonisolated(unsafe) private var framesSinceLaunch: Int = 0
+    @ObservationIgnored nonisolated(unsafe) private var lastDiagnosticLogTimestamp: TimeInterval = 0.0
     private var recentTimestamps: [TimeInterval] = []
     @ObservationIgnored private var simulatorTask: Task<Void, Never>? = nil
 
@@ -193,6 +200,9 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         config.isLightEstimationEnabled = true
         arSession.run(config, options: [.resetTracking, .removeExistingAnchors])
         isRunning = true
+        framesSinceLaunch = 0
+        lastDiagnosticLogTimestamp = 0
+        cameraLog.info("ARSession run: faceTracking supported=\(ARFaceTrackingConfiguration.isSupported) auth=\(AVCaptureDevice.authorizationStatus(for: .video).rawValue)")
     }
 
     func retryCamera() {
@@ -343,6 +353,14 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         // still report isTracked == true and be counted as a valid frame.
         let faceAnchor = frame.anchors.compactMap { $0 as? ARFaceAnchor }.first
 
+        framesSinceLaunch += 1
+        if framesSinceLaunch == 1 {
+            cameraLog.info("First ARFrame received; face anchor present=\(faceAnchor != nil)")
+        } else if timestamp - lastDiagnosticLogTimestamp >= 2.0 {
+            lastDiagnosticLogTimestamp = timestamp
+            cameraLog.info("ARFrame #\(self.framesSinceLaunch) faceTracked=\(faceAnchor?.isTracked ?? false) lux=\(ambientLux, format: .fixed(precision: 0))")
+        }
+
         let sample: EyeSample
         var lIris = CGPoint(x: -0.28, y: -0.08)
         var rIris = CGPoint(x: 0.28, y: -0.08)
@@ -422,6 +440,7 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     // MARK: - ARSessionObserver
 
     nonisolated func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        cameraLog.info("Tracking state: \(String(describing: camera.trackingState), privacy: .public)")
         Task { @MainActor [weak self] in
             guard let self, !self.isSimulatorEmulation else { return }
             switch camera.trackingState {
@@ -449,6 +468,7 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     }
 
     nonisolated func session(_ session: ARSession, didFailWithError error: Error) {
+        cameraLog.error("ARSession failed: \(error.localizedDescription, privacy: .public)")
         Task { @MainActor [weak self] in
             guard let self, !self.isSimulatorEmulation else { return }
             self.sessionErrorMessage = error.localizedDescription

@@ -375,9 +375,15 @@ struct AgentCollectiveCard: View {
                 .accessibilityLabel("Collective server settings")
             }
 
-            Text("Five agents (signal quality, contextual memory, physiology, skeptic, auditor) independently re-examine this recording against your history. Quality and skeptic agents can veto.")
+            Text("Five agents (signal quality, contextual memory, physiology, skeptic, auditor) independently re-examine this recording against your history. Quality and skeptic agents can veto. All five are deterministic algorithms, not language models.")
                 .font(.system(.caption))
                 .foregroundStyle(NeuroTheme.textSecondary)
+
+            if result.provenance != .liveCamera {
+                Text("SYNTHETIC: this run is reviewed against a separate demo history, never your personal baseline.")
+                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .foregroundStyle(NeuroTheme.amber)
+            }
 
             if showSettings || !bridge.hasConsented {
                 consentAndSettings
