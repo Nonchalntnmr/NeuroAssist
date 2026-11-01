@@ -342,10 +342,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NeuroAssist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the TrueDepth camera to measure eye movements for cognitive and neurological wellness assessments. Camera data is processed exclusively on-device in real-time and is never recorded or transmitted.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the TrueDepth camera to measure eye movements. Video is processed on this iPhone and is never recorded or sent. Only with your consent, numeric eye-angle traces can be sent to an analysis server you choose.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "With your consent, NeuroAssist sends numerical eye-angle traces (never images or video) to a NeuroAssist × CI analysis server on your local network for multi-agent review.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NeuroAssist optionally attaches a contextual location snapshot to research sessions and safety check-ins with your explicit consent. Continuous tracking is never performed.";
-				INFOPLIST_KEY_NSMotionUsageDescription = "it works ";
+				INFOPLIST_KEY_NSMotionUsageDescription = "NeuroAssist checks whether you are in a moving vehicle so it can lock eye tests while you drive.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -390,10 +390,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NeuroAssist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the TrueDepth camera to measure eye movements for cognitive and neurological wellness assessments. Camera data is processed exclusively on-device in real-time and is never recorded or transmitted.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NeuroAssist uses the TrueDepth camera to measure eye movements. Video is processed on this iPhone and is never recorded or sent. Only with your consent, numeric eye-angle traces can be sent to an analysis server you choose.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "With your consent, NeuroAssist sends numerical eye-angle traces (never images or video) to a NeuroAssist × CI analysis server on your local network for multi-agent review.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NeuroAssist optionally attaches a contextual location snapshot to research sessions and safety check-ins with your explicit consent. Continuous tracking is never performed.";
-				INFOPLIST_KEY_NSMotionUsageDescription = "it works ";
+				INFOPLIST_KEY_NSMotionUsageDescription = "NeuroAssist checks whether you are in a moving vehicle so it can lock eye tests while you drive.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
