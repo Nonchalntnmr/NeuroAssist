@@ -194,7 +194,7 @@ struct CalibrationView: View {
 
                 // Live Camera Preview Feed inside Face Oval
                 Group {
-                    if tracker.isTrueDepthSupported && !tracker.cameraPermissionDenied {
+                    if tracker.isTrueDepthSupported && !tracker.cameraPermissionDenied && !tracker.isSimulatorEmulation {
                         #if !targetEnvironment(simulator)
                         ARCameraPreview(session: tracker.rawARSession)
                             .frame(width: 160, height: 220)
@@ -205,7 +205,7 @@ struct CalibrationView: View {
                             .frame(width: 160, height: 220)
                             .clipShape(RoundedRectangle(cornerRadius: 80))
                         #endif
-                    } else if tracker.cameraPermissionDenied {
+                    } else if tracker.cameraPermissionDenied && !tracker.isSimulatorEmulation {
                         CameraPermissionDeniedMiniView(tracker: tracker)
                             .frame(width: 160, height: 220)
                             .clipShape(RoundedRectangle(cornerRadius: 80))
@@ -684,6 +684,9 @@ struct CalibrationView: View {
 
                     // 1. Move smoothly to next position (Strictly ZERO sampling during motion)
                     targetPhase = .moving
+                    tracker.demoStimulus = .fixate(
+                        angleDeg: CalibrationPointSample.computeTrueAngleDeg(offsetCm: offsetCm, distanceCm: tracker.distanceCm)
+                    )
                     withAnimation(.easeInOut(duration: 0.38)) {
                         targetOffsetPt = targetX
                     }
@@ -699,7 +702,9 @@ struct CalibrationView: View {
                     // 3. Stationary sampling window
                     targetPhase = .sampling(progress: 0.0)
                     tracker.beginRecording()
-                    let stationaryStartTime = CFAbsoluteTimeGetCurrent()
+                    // Must share the sample clock (ARFrame.timestamp / CACurrentMediaTime = system uptime);
+                    // CFAbsoluteTime is seconds since 2001 and never matches sample timestamps.
+                    let stationaryStartTime = ProcessInfo.processInfo.systemUptime
 
                     var stationaryElapsedSec: Double = 0.0
                     var acquiredSample: CalibrationPointSample? = nil
@@ -790,6 +795,8 @@ struct CalibrationView: View {
                 }
             }
 
+            tracker.demoStimulus = .fixate(angleDeg: 0.0)
+
             // 4. Verify Final Calibration Fit
             guard collectedPoints.count == dotFractions.count,
                   let model = SignalMath.fitCalibration(points: collectedPoints) else {
@@ -827,6 +834,7 @@ struct CalibrationView: View {
         calibrationSequenceTask?.cancel()
         positionMonitorTask = nil
         calibrationSequenceTask = nil
+        tracker.demoStimulus = .fixate(angleDeg: 0.0)
     }
 
     private var verifiedModel: CalibrationModel? {

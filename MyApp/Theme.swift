@@ -380,7 +380,7 @@ struct SimulatorCameraPlaceholderView: View {
                         Circle()
                             .fill(tracker.isRunning ? NeuroTheme.teal : NeuroTheme.amber)
                             .frame(width: 5, height: 5)
-                        Text(tracker.isSimulatorEmulation ? "SIMULATOR ACTIVE · 60 HZ" : "ACQUIRING FEED")
+                        Text(tracker.isSimulatorEmulation ? "DEMO MODE · 60 HZ" : "ACQUIRING FEED")
                             .font(.system(size: 8, weight: .bold, design: .monospaced))
                             .foregroundStyle(NeuroTheme.textSecondary)
                     }

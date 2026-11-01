@@ -160,7 +160,7 @@ struct LiveCheckView: View {
                                 NeuroHaptics.selection()
                                 tracker.enableEmulationMode()
                             } label: {
-                                Text("Switch to Emulation")
+                                Text("Demo Mode")
                                     .font(.system(.caption, design: .monospaced).weight(.bold))
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 10)
@@ -234,9 +234,20 @@ struct LiveCheckView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "sparkles.tv")
                             .foregroundStyle(NeuroTheme.teal)
-                        Text("SIMULATOR EMULATION ACTIVE · 60 HZ SYNTHETIC PIPELINE")
+                        Text("DEMO MODE · SYNTHETIC EYE DATA · RESULTS MARKED SIMULATED")
                             .font(.system(size: 10, weight: .bold, design: .monospaced))
                             .foregroundStyle(NeuroTheme.teal)
+                        Spacer()
+                        #if !targetEnvironment(simulator)
+                        Button {
+                            NeuroHaptics.selection()
+                            tracker.retryCamera()
+                        } label: {
+                            Text("EXIT")
+                                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                .foregroundStyle(NeuroTheme.amber)
+                        }
+                        #endif
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
@@ -351,13 +362,13 @@ struct LiveCheckView: View {
                 }
                 .disabled(!readyToCalibrate)
 
-                if tracker.fps < 1.0 && !tracker.isSimulatorEmulation {
+                if !tracker.isSimulatorEmulation {
                     HStack(spacing: 12) {
                         Button {
                             NeuroHaptics.selection()
                             tracker.enableEmulationMode()
                         } label: {
-                            Label("Switch to Emulation Mode", systemImage: "sparkles.tv")
+                            Label("Run in Demo Mode", systemImage: "sparkles.tv")
                                 .font(.system(.caption, design: .monospaced).weight(.bold))
                                 .foregroundStyle(NeuroTheme.teal)
                         }
@@ -456,7 +467,7 @@ private struct LiveFaceIrisGuideCard: View {
                             CameraPermissionDeniedMiniView(tracker: tracker)
                                 .frame(width: ovalW, height: ovalH)
                                 .clipShape(Ellipse())
-                        } else if tracker.isTrueDepthSupported {
+                        } else if tracker.isTrueDepthSupported && !tracker.isSimulatorEmulation {
                             #if !targetEnvironment(simulator)
                             ARCameraPreview(session: tracker.rawARSession)
                                 .frame(width: ovalW, height: ovalH)

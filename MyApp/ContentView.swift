@@ -286,7 +286,7 @@ struct ContentView: View {
                     platformStore.recordMeasurementSession(
                         result: analysisResult,
                         calibration: model,
-                        category: pendingCategory,
+                        category: analysisResult.provenance == .simulated ? .simulatedDemo : pendingCategory,
                         drivingResearchTag: pendingDrivingTag
                     )
                     withAnimation(.spring(duration: 0.3)) {

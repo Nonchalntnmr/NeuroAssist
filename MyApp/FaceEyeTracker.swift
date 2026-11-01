@@ -95,6 +95,15 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     private var recentTimestamps: [TimeInterval] = []
     @ObservationIgnored private var simulatorTask: Task<Void, Never>? = nil
 
+    /// What the synthetic eye does in demo mode. Screens set this so the emulated gaze
+    /// follows calibration dots and produces an OKN sawtooth during the stripes test.
+    enum DemoGazeStimulus: Equatable {
+        case fixate(angleDeg: Double)
+        case optokinetic(stripeVelocityDegPerSec: Double)
+    }
+    /// Ignored outside demo mode.
+    @ObservationIgnored var demoStimulus: DemoGazeStimulus = .fixate(angleDeg: 0.0)
+
     override init() {
         super.init()
         arSession.delegate = self
@@ -126,6 +135,12 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         return
         #else
         guard !isRunning, !isStarting else { return }
+        if isSimulatorEmulation {
+            // Demo mode persists across stop()/start() (backgrounding, screen changes)
+            isRunning = true
+            startSimulatorEmulation()
+            return
+        }
         isStarting = true
         sessionErrorMessage = nil
         isInterrupted = false
@@ -211,6 +226,8 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         isSimulatorEmulation = true
         cameraPermissionDenied = false
         sessionErrorMessage = nil
+        isInterrupted = false
+        demoStimulus = .fixate(angleDeg: 0.0)
         isRunning = true
         startSimulatorEmulation()
     }
@@ -224,13 +241,28 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         simulatorTask?.cancel()
         simulatorTask = Task { @MainActor [weak self] in
             let startTime = CACurrentMediaTime()
+            var lastTimestamp = startTime
+            var eyeYawDeg = 0.0
+            var oknPhaseSec = 0.0
             while !Task.isCancelled {
                 guard let self else { break }
-                let t = CACurrentMediaTime() - startTime
                 let timestamp = CACurrentMediaTime()
+                let t = timestamp - startTime
+                let dt = min(0.1, max(0.0, timestamp - lastTimestamp))
+                lastTimestamp = timestamp
 
-                // Realistic subtle gaze micro-movement + steady head at 32 cm
-                let simulatedYaw = sin(t * 1.2) * 0.35
+                switch self.demoStimulus {
+                case .fixate(let angleDeg):
+                    // Saccade-like exponential approach (~30 ms time constant) toward the target
+                    oknPhaseSec = 0.0
+                    eyeYawDeg += (angleDeg - eyeYawDeg) * min(1.0, dt / 0.03)
+                case .optokinetic(let stripeVelocity):
+                    // OKN sawtooth: slow phase follows stripes at 0.8 gain, fast-phase reset every 0.55 s
+                    oknPhaseSec += dt
+                    if oknPhaseSec >= 0.55 { oknPhaseSec -= 0.55 }
+                    eyeYawDeg = -2.2 + 0.8 * stripeVelocity * oknPhaseSec
+                }
+                let simulatedYaw = eyeYawDeg + Self.gaussianNoise(sigma: 0.08)
                 let simulatedDist = 31.5 + sin(t * 0.8) * 0.5
                 let sample = EyeSample(
                     timestamp: timestamp,
@@ -249,8 +281,10 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
                     await buffer.append(sample)
                 }
 
-                let leftIris = CGPoint(x: -0.28, y: -0.08)
-                let rightIris = CGPoint(x: 0.28, y: -0.08)
+                // Shift the iris rings with gaze, matching the live ARKit mapping
+                let eyeShift = max(-0.12, min(0.12, simulatedYaw / 35.0))
+                let leftIris = CGPoint(x: -0.27 + eyeShift, y: -0.08)
+                let rightIris = CGPoint(x: 0.27 + eyeShift, y: -0.08)
 
                 self.ingestSample(
                     sample,
@@ -263,6 +297,13 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
                 try? await Task.sleep(nanoseconds: 16_666_667) // 60 Hz
             }
         }
+    }
+
+    /// Box-Muller Gaussian sample for synthetic tracking noise.
+    private static func gaussianNoise(sigma: Double) -> Double {
+        let u1 = Double.random(in: Double.ulpOfOne..<1.0)
+        let u2 = Double.random(in: 0.0..<1.0)
+        return sqrt(-2.0 * log(u1)) * cos(2.0 * .pi * u2) * sigma
     }
 
     func beginRecording() {
@@ -382,7 +423,7 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
 
     nonisolated func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self, !self.isSimulatorEmulation else { return }
             switch camera.trackingState {
             case .notAvailable:
                 self.sessionErrorMessage = "Face tracking camera unavailable."
@@ -409,7 +450,7 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
 
     nonisolated func session(_ session: ARSession, didFailWithError error: Error) {
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self, !self.isSimulatorEmulation else { return }
             self.sessionErrorMessage = error.localizedDescription
             self.isRunning = false
             self.isStarting = false
@@ -423,14 +464,15 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
 
     nonisolated func sessionWasInterrupted(_ session: ARSession) {
         Task { @MainActor [weak self] in
-            self?.isInterrupted = true
-            self?.faceTracked = false
+            guard let self, !self.isSimulatorEmulation else { return }
+            self.isInterrupted = true
+            self.faceTracked = false
         }
     }
 
     nonisolated func sessionInterruptionEnded(_ session: ARSession) {
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self, !self.isSimulatorEmulation else { return }
             self.isInterrupted = false
             self.launchARSession()
         }
