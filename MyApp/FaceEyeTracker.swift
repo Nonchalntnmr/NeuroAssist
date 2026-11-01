@@ -2,7 +2,12 @@ import Foundation
 import ARKit
 import CoreMotion
 import Observation
+import os
 import simd
+import UIKit
+
+/// Camera pipeline diagnostics (visible in the Xcode console / Console.app, subsystem "neuroassist").
+let cameraLog = Logger(subsystem: "neuroassist", category: "camera")
 
 /// Dedicated serial background pipeline that stores recorded samples off the MainActor
 /// and off ARKit's callback thread.
@@ -34,7 +39,11 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
 
     private(set) var isTrueDepthSupported: Bool = ARFaceTrackingConfiguration.isSupported
     private(set) var isRunning: Bool = false
+    private(set) var isStarting: Bool = false
     private(set) var cameraPermissionDenied: Bool = false
+    private(set) var sessionErrorMessage: String? = nil
+    private(set) var isInterrupted: Bool = false
+    private(set) var isSimulatorEmulation: Bool = false
 
     // Live telemetry (throttled ~20 Hz for calm UI rendering while recording stays full 60 Hz)
     private(set) var faceTracked: Bool = false
@@ -80,12 +89,27 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     private var activeRecordingMirror: [EyeSample] = []
 
     @ObservationIgnored private let arSession = ARSession()
+    public var rawARSession: ARSession { arSession }
+
     @ObservationIgnored private let acquisitionQueue = DispatchQueue(
         label: "com.neuroassist.arkit.acquisition",
         qos: .userInteractive
     )
     @ObservationIgnored nonisolated(unsafe) private var lastUIUpdateTimestamp: TimeInterval = 0.0
+    // Diagnostics counters; only touched on the acquisition queue after launch resets them
+    @ObservationIgnored nonisolated(unsafe) private var framesSinceLaunch: Int = 0
+    @ObservationIgnored nonisolated(unsafe) private var lastDiagnosticLogTimestamp: TimeInterval = 0.0
     private var recentTimestamps: [TimeInterval] = []
+    @ObservationIgnored private var simulatorTask: Task<Void, Never>? = nil
+
+    /// What the synthetic eye does in demo mode. Screens set this so the emulated gaze
+    /// follows calibration dots and produces an OKN sawtooth during the stripes test.
+    enum DemoGazeStimulus: Equatable {
+        case fixate(angleDeg: Double)
+        case optokinetic(stripeVelocityDegPerSec: Double)
+    }
+    /// Ignored outside demo mode.
+    @ObservationIgnored var demoStimulus: DemoGazeStimulus = .fixate(angleDeg: 0.0)
 
     override init() {
         super.init()
@@ -107,44 +131,189 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
     }
 
     func start() {
-        isTrueDepthSupported = ARFaceTrackingConfiguration.isSupported
         thermalState = ProcessInfo.processInfo.thermalState
-        guard isTrueDepthSupported else { return }
+
+        #if targetEnvironment(simulator)
+        isSimulatorEmulation = true
+        isTrueDepthSupported = true
+        cameraPermissionDenied = false
+        isRunning = true
+        startSimulatorEmulation()
+        return
+        #else
+        guard !isRunning, !isStarting else { return }
+        if isSimulatorEmulation {
+            // Demo mode persists across stop()/start() (backgrounding, screen changes)
+            isRunning = true
+            startSimulatorEmulation()
+            return
+        }
+        isStarting = true
+        sessionErrorMessage = nil
+        isInterrupted = false
+
+        isTrueDepthSupported = ARFaceTrackingConfiguration.isSupported
+        guard isTrueDepthSupported else {
+            sessionErrorMessage = "TrueDepth front camera is required for real-time eye tracking. This device does not support ARFaceTrackingConfiguration."
+            isRunning = false
+            isStarting = false
+            return
+        }
 
         let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
         switch authStatus {
         case .authorized:
+            cameraPermissionDenied = false
             launchARSession()
+            isStarting = false
         case .notDetermined:
             Task { @MainActor [weak self] in
-                let granted = await AVCaptureDevice.requestAccess(for: .video)
                 guard let self else { return }
+                let granted = await AVCaptureDevice.requestAccess(for: .video)
+                self.isStarting = false
                 if granted {
                     self.cameraPermissionDenied = false
                     self.launchARSession()
                 } else {
                     self.cameraPermissionDenied = true
+                    self.sessionErrorMessage = "Camera permission was denied. Allow camera access in iOS Settings to enable TrueDepth face tracking."
                 }
             }
         case .denied, .restricted:
             cameraPermissionDenied = true
+            sessionErrorMessage = "Camera access denied. Please allow camera permissions in iOS Settings."
+            isStarting = false
         @unknown default:
+            isStarting = false
             break
         }
+        #endif
     }
 
     private func launchARSession() {
+        sessionErrorMessage = nil
+        isInterrupted = false
+        arSession.delegate = self
+        arSession.delegateQueue = acquisitionQueue
         let config = ARFaceTrackingConfiguration()
         config.maximumNumberOfTrackedFaces = 1
         config.isLightEstimationEnabled = true
         arSession.run(config, options: [.resetTracking, .removeExistingAnchors])
         isRunning = true
+        framesSinceLaunch = 0
+        lastDiagnosticLogTimestamp = 0
+        cameraLog.info("ARSession run: faceTracking supported=\(ARFaceTrackingConfiguration.isSupported) auth=\(AVCaptureDevice.authorizationStatus(for: .video).rawValue)")
+    }
+
+    func retryCamera() {
+        stop()
+        sessionErrorMessage = nil
+        cameraPermissionDenied = false
+        isInterrupted = false
+        // Leave emulation so synthetic samples never mix with real TrueDepth data
+        isSimulatorEmulation = false
+        start()
     }
 
     func stop() {
+        isStarting = false
+        // Emulation can run on device too (enableEmulationMode), so always cancel it
+        simulatorTask?.cancel()
+        simulatorTask = nil
+        #if !targetEnvironment(simulator)
         arSession.pause()
+        #endif
         isRunning = false
         isRecording = false
+        fps = 0.0
+        faceTracked = false
+        recentTimestamps.removeAll()
+        recentSamples.removeAll()
+    }
+
+    func enableEmulationMode() {
+        stop()
+        isSimulatorEmulation = true
+        cameraPermissionDenied = false
+        sessionErrorMessage = nil
+        isInterrupted = false
+        demoStimulus = .fixate(angleDeg: 0.0)
+        isRunning = true
+        startSimulatorEmulation()
+    }
+
+    func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    private func startSimulatorEmulation() {
+        simulatorTask?.cancel()
+        simulatorTask = Task { @MainActor [weak self] in
+            let startTime = CACurrentMediaTime()
+            var lastTimestamp = startTime
+            var eyeYawDeg = 0.0
+            var oknPhaseSec = 0.0
+            while !Task.isCancelled {
+                guard let self else { break }
+                let timestamp = CACurrentMediaTime()
+                let t = timestamp - startTime
+                let dt = min(0.1, max(0.0, timestamp - lastTimestamp))
+                lastTimestamp = timestamp
+
+                switch self.demoStimulus {
+                case .fixate(let angleDeg):
+                    // Saccade-like exponential approach (~30 ms time constant) toward the target
+                    oknPhaseSec = 0.0
+                    eyeYawDeg += (angleDeg - eyeYawDeg) * min(1.0, dt / 0.03)
+                case .optokinetic(let stripeVelocity):
+                    // OKN sawtooth: slow phase follows stripes at 0.8 gain, fast-phase reset every 0.55 s
+                    oknPhaseSec += dt
+                    if oknPhaseSec >= 0.55 { oknPhaseSec -= 0.55 }
+                    eyeYawDeg = -2.2 + 0.8 * stripeVelocity * oknPhaseSec
+                }
+                let simulatedYaw = eyeYawDeg + Self.gaussianNoise(sigma: 0.08)
+                let simulatedDist = 31.5 + sin(t * 0.8) * 0.5
+                let sample = EyeSample(
+                    timestamp: timestamp,
+                    rawYawDeg: simulatedYaw,
+                    faceTracked: true,
+                    blinkLeft: 0.05,
+                    blinkRight: 0.05,
+                    headYawDeg: 0.1,
+                    headPitchDeg: -0.2,
+                    distanceCm: simulatedDist,
+                    ambientLightLux: 500.0
+                )
+
+                let buffer = self.bufferActor
+                Task {
+                    await buffer.append(sample)
+                }
+
+                // Shift the iris rings with gaze, matching the live ARKit mapping
+                let eyeShift = max(-0.12, min(0.12, simulatedYaw / 35.0))
+                let leftIris = CGPoint(x: -0.27 + eyeShift, y: -0.08)
+                let rightIris = CGPoint(x: 0.27 + eyeShift, y: -0.08)
+
+                self.ingestSample(
+                    sample,
+                    leftIris: leftIris,
+                    rightIris: rightIris,
+                    callbackLatencyMs: 0.3,
+                    refreshLiveChart: true
+                )
+
+                try? await Task.sleep(nanoseconds: 16_666_667) // 60 Hz
+            }
+        }
+    }
+
+    /// Box-Muller Gaussian sample for synthetic tracking noise.
+    private static func gaussianNoise(sigma: Double) -> Double {
+        let u1 = Double.random(in: Double.ulpOfOne..<1.0)
+        let u2 = Double.random(in: 0.0..<1.0)
+        return sqrt(-2.0 * log(u1)) * cos(2.0 * .pi * u2) * sigma
     }
 
     func beginRecording() {
@@ -180,7 +349,17 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
         let callbackStart = CFAbsoluteTimeGetCurrent()
         let timestamp = frame.timestamp
         let ambientLux = Double(frame.lightEstimate?.ambientIntensity ?? 1000.0)
+        // Use only this frame's anchor; a cached anchor is a stale snapshot that would
+        // still report isTracked == true and be counted as a valid frame.
         let faceAnchor = frame.anchors.compactMap { $0 as? ARFaceAnchor }.first
+
+        framesSinceLaunch += 1
+        if framesSinceLaunch == 1 {
+            cameraLog.info("First ARFrame received; face anchor present=\(faceAnchor != nil)")
+        } else if timestamp - lastDiagnosticLogTimestamp >= 2.0 {
+            lastDiagnosticLogTimestamp = timestamp
+            cameraLog.info("ARFrame #\(self.framesSinceLaunch) faceTracked=\(faceAnchor?.isTracked ?? false) lux=\(ambientLux, format: .fixed(precision: 0))")
+        }
 
         let sample: EyeSample
         var lIris = CGPoint(x: -0.28, y: -0.08)
@@ -201,7 +380,7 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
             let distMeters = simd_distance(camPos, facePos)
             let distCm = Double(distMeters) * 100.0
 
-            // Normalized iris offset inside face guide oval from head + eye transforms
+            // Eye direction indicator inside face guide oval from head + eye transforms
             let normHeadX = max(-0.45, min(0.45, hYaw / 25.0))
             let normHeadY = max(-0.35, min(0.35, -hPitch / 25.0))
             let normEyeShift = max(-0.12, min(0.12, avgEyeYaw / 35.0))
@@ -255,6 +434,67 @@ final class FaceEyeTracker: NSObject, ARSessionDelegate {
                 callbackLatencyMs: callbackMs,
                 refreshLiveChart: shouldRefreshUI
             )
+        }
+    }
+
+    // MARK: - ARSessionObserver
+
+    nonisolated func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        cameraLog.info("Tracking state: \(String(describing: camera.trackingState), privacy: .public)")
+        Task { @MainActor [weak self] in
+            guard let self, !self.isSimulatorEmulation else { return }
+            switch camera.trackingState {
+            case .notAvailable:
+                self.sessionErrorMessage = "Face tracking camera unavailable."
+            case .limited(let reason):
+                switch reason {
+                case .excessiveMotion:
+                    self.sessionErrorMessage = "Excessive device motion. Please hold device steady."
+                case .insufficientFeatures:
+                    self.sessionErrorMessage = "Low ambient light or obscured face."
+                case .initializing:
+                    break
+                case .relocalizing:
+                    break
+                @unknown default:
+                    break
+                }
+            case .normal:
+                if self.sessionErrorMessage?.contains("motion") == true || self.sessionErrorMessage?.contains("obscured") == true {
+                    self.sessionErrorMessage = nil
+                }
+            }
+        }
+    }
+
+    nonisolated func session(_ session: ARSession, didFailWithError error: Error) {
+        cameraLog.error("ARSession failed: \(error.localizedDescription, privacy: .public)")
+        Task { @MainActor [weak self] in
+            guard let self, !self.isSimulatorEmulation else { return }
+            self.sessionErrorMessage = error.localizedDescription
+            self.isRunning = false
+            self.isStarting = false
+            self.faceTracked = false
+            self.fps = 0.0
+            if let arError = error as? ARError, arError.code == .cameraUnauthorized {
+                self.cameraPermissionDenied = true
+            }
+        }
+    }
+
+    nonisolated func sessionWasInterrupted(_ session: ARSession) {
+        Task { @MainActor [weak self] in
+            guard let self, !self.isSimulatorEmulation else { return }
+            self.isInterrupted = true
+            self.faceTracked = false
+        }
+    }
+
+    nonisolated func sessionInterruptionEnded(_ session: ARSession) {
+        Task { @MainActor [weak self] in
+            guard let self, !self.isSimulatorEmulation else { return }
+            self.isInterrupted = false
+            self.launchARSession()
         }
     }
 

@@ -226,6 +226,7 @@ struct StripesTestView: View {
         .statusBarHidden(isPresentingStripes)
         .onDisappear {
             testTask?.cancel()
+            tracker.demoStimulus = .fixate(angleDeg: 0.0)
         }
     }
 
@@ -237,6 +238,7 @@ struct StripesTestView: View {
         elapsedSec = 0.0
         liveSnapshot = nil
         isPresentingStripes = true
+        tracker.demoStimulus = .optokinetic(stripeVelocityDegPerSec: stripeVelocityDegPerSec)
         tracker.beginRecording()
 
         let cal = calibration
@@ -276,6 +278,7 @@ struct StripesTestView: View {
 
             if Task.isCancelled { return }
             let samples = tracker.finishRecording()
+            tracker.demoStimulus = .fixate(angleDeg: 0.0)
             isPresentingStripes = false
 
             let result = SignalMath.analyzeOptokinetic(
@@ -283,7 +286,8 @@ struct StripesTestView: View {
                 calibration: cal,
                 stripeDirectionSign: 1.0,
                 mode: mode,
-                provenance: .liveCamera,
+                // Demo-mode runs are synthetic and must never count as live measurements
+                provenance: tracker.isSimulatorEmulation ? .simulated : .liveCamera,
                 stoppedEarly: stoppedEarly
             )
 

@@ -39,6 +39,8 @@ struct ContentView: View {
     @State private var step: AppFlowStep = .home
     @State private var acceptedCalibration: CalibrationModel? = nil
     @State private var lastResult: OKNAnalysisResult? = nil
+    @State private var lastSamples: [EyeSample] = []
+    @State private var collectiveBridge = CollectiveBridge()
     @State private var protocolMode: MeasurementProtocolMode = .researchFixed
     @State private var showingPauseArriveSafe: Bool = false
     @State private var pendingCategory: SessionTestCategory = .preDriveCheck
@@ -77,6 +79,7 @@ struct ContentView: View {
                             onLaunchResultDirect: { directResult, cal in
                                 acceptedCalibration = cal
                                 lastResult = directResult
+                                collectiveBridge.reset()
                                 let cat: SessionTestCategory = directResult.provenance == .recordedSession ? .recordedReplay : .simulatedDemo
                                 platformStore.recordMeasurementSession(
                                     result: directResult,
@@ -206,6 +209,7 @@ struct ContentView: View {
                 onLaunchResultDirect: { directResult, cal in
                     acceptedCalibration = cal
                     lastResult = directResult
+                    collectiveBridge.reset()
                     let cat: SessionTestCategory = directResult.provenance == .recordedSession ? .recordedReplay : .simulatedDemo
                     platformStore.recordMeasurementSession(
                         result: directResult,
@@ -239,6 +243,7 @@ struct ContentView: View {
                     let (simRes, simCal) = DemoExperienceStore.runSimulatedScenario(.validPursuit, mode: protocolMode)
                     acceptedCalibration = simCal
                     lastResult = simRes
+                    collectiveBridge.reset()
                     platformStore.recordMeasurementSession(
                         result: simRes,
                         calibration: simCal,
@@ -282,11 +287,13 @@ struct ContentView: View {
                 },
                 onCompleted: { analysisResult, rawSamples in
                     lastResult = analysisResult
+                    lastSamples = rawSamples
+                    collectiveBridge.reset()
                     store.recordRealResult(analysisResult, samples: rawSamples, calibration: model)
                     platformStore.recordMeasurementSession(
                         result: analysisResult,
                         calibration: model,
-                        category: pendingCategory,
+                        category: analysisResult.provenance == .simulated ? .simulatedDemo : pendingCategory,
                         drivingResearchTag: pendingDrivingTag
                     )
                     withAnimation(.spring(duration: 0.3)) {
@@ -332,7 +339,10 @@ struct ContentView: View {
                 },
                 onOpenPauseAndArriveSafe: {
                     showingPauseArriveSafe = true
-                }
+                },
+                bridge: collectiveBridge,
+                // Raw trace only belongs to the result it was recorded with
+                rawSamples: analysisResult == lastResult ? lastSamples : []
             )
         }
     }

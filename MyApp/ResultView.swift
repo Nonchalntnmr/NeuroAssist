@@ -9,6 +9,8 @@ struct ResultView: View {
     let onRecalibrate: () -> Void
     let onDoneHome: () -> Void
     let onOpenPauseAndArriveSafe: () -> Void
+    var bridge: CollectiveBridge? = nil
+    var rawSamples: [EyeSample] = []
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var csvURL: URL? = nil
@@ -70,6 +72,16 @@ struct ResultView: View {
                 // Recorded Calibrated Eye Trace (Draws itself across the screen on MEASURED)
                 if let cal = calibration, cal.isAccepted, !result.tracePoints.isEmpty {
                     traceChartCard
+                }
+
+                // NeuroAssist × CI: independent multi-agent review of this recording
+                if let bridge {
+                    AgentCollectiveCard(
+                        bridge: bridge,
+                        result: result,
+                        calibration: calibration,
+                        samples: rawSamples
+                    )
                 }
 
                 // B. SIGNAL-TO-EVIDENCE REVEAL (Interactive Evidence Breakdown)
