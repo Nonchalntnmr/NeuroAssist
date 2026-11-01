@@ -7,7 +7,7 @@ import simd
 import UIKit
 
 /// Camera pipeline diagnostics (visible in the Xcode console / Console.app, subsystem "neuroassist").
-let cameraLog = Logger(subsystem: "neuroassist", category: "camera")
+nonisolated let cameraLog = Logger(subsystem: "neuroassist", category: "camera")
 
 /// Dedicated serial background pipeline that stores recorded samples off the MainActor
 /// and off ARKit's callback thread.
