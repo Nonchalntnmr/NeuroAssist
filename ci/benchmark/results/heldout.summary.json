@@ -1,0 +1,485 @@
+{
+ "schema": "naci.benchmark/1",
+ "split": "heldout",
+ "label": "SYNTHETIC",
+ "cases_sha256": "4030734b652f1435d40ad6640511127d73943580c11db3d705747d428df3ec46",
+ "n_cases": 270,
+ "python": "3.13.18",
+ "generated_at": "2026-10-31T07:58:34Z",
+ "systems": {
+  "deterministic": {
+   "label": "NeuroAssist gate + previous visit",
+   "n": 270,
+   "accuracy": 0.5852,
+   "unsupported_conclusion_rate": 0.4148,
+   "unsupported_among_conclusions": 0.5773,
+   "appropriate_abstention": 0.6179,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.6167,
+   "harmful_artifact_caught": 0.8132,
+   "artifact_false_flag_rate": 0.0133,
+   "baseline_retrieval_jaccard": 0.1354,
+   "evidence_traceability": 0.0,
+   "latency_ms_median": 0.01,
+   "latency_ms_p95": 0.01,
+   "llm_tokens": 0
+  },
+  "single_agent": {
+   "label": "Single agent, one pass, full history",
+   "n": 270,
+   "accuracy": 0.9185,
+   "unsupported_conclusion_rate": 0.0815,
+   "unsupported_among_conclusions": 0.1341,
+   "appropriate_abstention": 0.8618,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.6167,
+   "harmful_artifact_caught": 0.8132,
+   "artifact_false_flag_rate": 0.0133,
+   "baseline_retrieval_jaccard": 0.9117,
+   "evidence_traceability": 0.0,
+   "latency_ms_median": 0.01,
+   "latency_ms_p95": 0.01,
+   "llm_tokens": 0
+  },
+  "collective_no_history": {
+   "label": "Collective, no historical context",
+   "n": 270,
+   "accuracy": 0.4556,
+   "unsupported_conclusion_rate": 0.0,
+   "unsupported_among_conclusions": null,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 1.0,
+   "artifact_detection_recall": 0.7583,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0133,
+   "baseline_retrieval_jaccard": null,
+   "evidence_traceability": 1.0,
+   "latency_ms_median": 8.21,
+   "latency_ms_p95": 14.28,
+   "llm_tokens": 0
+  },
+  "collective_naive_history": {
+   "label": "Collective, raw history (no CI)",
+   "n": 270,
+   "accuracy": 0.9815,
+   "unsupported_conclusion_rate": 0.0185,
+   "unsupported_among_conclusions": 0.034,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.7583,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0133,
+   "baseline_retrieval_jaccard": 0.9117,
+   "evidence_traceability": 1.0,
+   "latency_ms_median": 8.59,
+   "latency_ms_p95": 14.25,
+   "llm_tokens": 0
+  },
+  "collective_ci": {
+   "label": "Collective + CI memory",
+   "n": 270,
+   "accuracy": 0.9889,
+   "unsupported_conclusion_rate": 0.0111,
+   "unsupported_among_conclusions": 0.0204,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.7583,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0133,
+   "baseline_retrieval_jaccard": 1.0,
+   "evidence_traceability": 1.0,
+   "latency_ms_median": 9.59,
+   "latency_ms_p95": 14.98,
+   "llm_tokens": 0
+  },
+  "monolith_ci": {
+   "label": "Ablation: same checks in one function + CI",
+   "n": 270,
+   "accuracy": 0.9889,
+   "unsupported_conclusion_rate": 0.0111,
+   "unsupported_among_conclusions": 0.0204,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.7583,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0133,
+   "baseline_retrieval_jaccard": 1.0,
+   "evidence_traceability": 0.0,
+   "latency_ms_median": 7.19,
+   "latency_ms_p95": 9.28,
+   "llm_tokens": 0
+  }
+ },
+ "per_type": {
+  "deterministic": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "clean": {
+    "accuracy": 0.7667,
+    "unsupported": 7,
+    "n": 30
+   },
+   "conflicting_history": {
+    "accuracy": 0.0333,
+    "unsupported": 29,
+    "n": 30
+   },
+   "insufficient_baseline": {
+    "accuracy": 0.0,
+    "unsupported": 30,
+    "n": 30
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "misleading_change": {
+    "accuracy": 0.0333,
+    "unsupported": 29,
+    "n": 30
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "tracking_artifact": {
+    "accuracy": 0.4333,
+    "unsupported": 17,
+    "n": 30
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   }
+  },
+  "single_agent": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "clean": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "conflicting_history": {
+    "accuracy": 0.9,
+    "unsupported": 3,
+    "n": 30
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "misleading_change": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "tracking_artifact": {
+    "accuracy": 0.4333,
+    "unsupported": 17,
+    "n": 30
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   }
+  },
+  "collective_no_history": {
+   "change_with_incidental_artifact": {
+    "accuracy": 0.0333,
+    "unsupported": 0,
+    "n": 30
+   },
+   "clean": {
+    "accuracy": 0.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "conflicting_history": {
+    "accuracy": 0.0333,
+    "unsupported": 0,
+    "n": 30
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "misleading_change": {
+    "accuracy": 0.0333,
+    "unsupported": 0,
+    "n": 30
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "true_change": {
+    "accuracy": 0.0,
+    "unsupported": 0,
+    "n": 30
+   }
+  },
+  "collective_naive_history": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "clean": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "conflicting_history": {
+    "accuracy": 0.9,
+    "unsupported": 3,
+    "n": 30
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "misleading_change": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   }
+  },
+  "collective_ci": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "clean": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "conflicting_history": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "misleading_change": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   }
+  },
+  "monolith_ci": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "clean": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "conflicting_history": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "misleading_change": {
+    "accuracy": 0.9667,
+    "unsupported": 1,
+    "n": 30
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 30
+   }
+  }
+ },
+ "faults": {
+  "signal_quality:silent": {
+   "accuracy": 0.3444,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "signal_quality:byzantine": {
+   "accuracy": 0.9889,
+   "unsupported_conclusion_rate": 0.0111,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "contextual_memory:silent": {
+   "accuracy": 0.4556,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "contextual_memory:byzantine": {
+   "accuracy": 0.4556,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "physiology:silent": {
+   "accuracy": 0.3444,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "physiology:byzantine": {
+   "accuracy": 0.563,
+   "unsupported_conclusion_rate": 0.0111,
+   "over_abstention": 0.5782,
+   "appropriate_abstention": 1.0
+  },
+  "skeptic:silent": {
+   "accuracy": 0.9889,
+   "unsupported_conclusion_rate": 0.0111,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "skeptic:byzantine": {
+   "accuracy": 0.9889,
+   "unsupported_conclusion_rate": 0.0111,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "auditor:silent": {
+   "accuracy": 0.3444,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "auditor:byzantine": {
+   "accuracy": 0.9889,
+   "unsupported_conclusion_rate": 0.0111,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  }
+ },
+ "monolith_faults": {
+  "signal_quality:byzantine": {
+   "accuracy": 0.9889,
+   "unsupported_conclusion_rate": 0.0111,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "contextual_memory:byzantine": {
+   "accuracy": 0.663,
+   "unsupported_conclusion_rate": 0.337,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 0.7561
+  },
+  "physiology:byzantine": {
+   "accuracy": 0.6741,
+   "unsupported_conclusion_rate": 0.3259,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "skeptic:byzantine": {
+   "accuracy": 0.9259,
+   "unsupported_conclusion_rate": 0.0741,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 0.8618
+  }
+ }
+}

@@ -1,0 +1,3091 @@
+{
+ "schema": "naci.benchmark/1",
+ "split": "dev",
+ "label": "SYNTHETIC",
+ "cases_sha256": "309d20c97a1ad6262e41283f64e2fef19cc20d4e5b7748b94a40507173ad3757",
+ "n_cases": 108,
+ "python": "3.13.18",
+ "generated_at": "2026-10-31T07:58:03Z",
+ "systems": {
+  "deterministic": {
+   "label": "NeuroAssist gate + previous visit",
+   "n": 108,
+   "accuracy": 0.5556,
+   "unsupported_conclusion_rate": 0.4444,
+   "unsupported_among_conclusions": 0.6316,
+   "appropriate_abstention": 0.64,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.6458,
+   "harmful_artifact_caught": 0.8378,
+   "artifact_false_flag_rate": 0.0167,
+   "baseline_retrieval_jaccard": 0.1339,
+   "evidence_traceability": 0.0,
+   "latency_ms_median": 0.01,
+   "latency_ms_p95": 0.02,
+   "llm_tokens": 0
+  },
+  "single_agent": {
+   "label": "Single agent, one pass, full history",
+   "n": 108,
+   "accuracy": 0.8981,
+   "unsupported_conclusion_rate": 0.1019,
+   "unsupported_among_conclusions": 0.1719,
+   "appropriate_abstention": 0.88,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.6458,
+   "harmful_artifact_caught": 0.8378,
+   "artifact_false_flag_rate": 0.0167,
+   "baseline_retrieval_jaccard": 0.9057,
+   "evidence_traceability": 0.0,
+   "latency_ms_median": 0.01,
+   "latency_ms_p95": 0.02,
+   "llm_tokens": 0
+  },
+  "collective_no_history": {
+   "label": "Collective, no historical context",
+   "n": 108,
+   "accuracy": 0.463,
+   "unsupported_conclusion_rate": 0.0,
+   "unsupported_among_conclusions": null,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 1.0,
+   "artifact_detection_recall": 0.7708,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0167,
+   "baseline_retrieval_jaccard": null,
+   "evidence_traceability": 1.0,
+   "latency_ms_median": 7.59,
+   "latency_ms_p95": 12.65,
+   "llm_tokens": 0
+  },
+  "collective_naive_history": {
+   "label": "Collective, raw history (no CI)",
+   "n": 108,
+   "accuracy": 0.9537,
+   "unsupported_conclusion_rate": 0.0463,
+   "unsupported_among_conclusions": 0.0862,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.7708,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0167,
+   "baseline_retrieval_jaccard": 0.9057,
+   "evidence_traceability": 1.0,
+   "latency_ms_median": 7.71,
+   "latency_ms_p95": 12.81,
+   "llm_tokens": 0
+  },
+  "collective_ci": {
+   "label": "Collective + CI memory",
+   "n": 108,
+   "accuracy": 0.9907,
+   "unsupported_conclusion_rate": 0.0093,
+   "unsupported_among_conclusions": 0.0172,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.7708,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0167,
+   "baseline_retrieval_jaccard": 1.0,
+   "evidence_traceability": 1.0,
+   "latency_ms_median": 10.11,
+   "latency_ms_p95": 16.65,
+   "llm_tokens": 0
+  },
+  "monolith_ci": {
+   "label": "Ablation: same checks in one function + CI",
+   "n": 108,
+   "accuracy": 0.9907,
+   "unsupported_conclusion_rate": 0.0093,
+   "unsupported_among_conclusions": 0.0172,
+   "appropriate_abstention": 1.0,
+   "over_abstention": 0.0,
+   "artifact_detection_recall": 0.7708,
+   "harmful_artifact_caught": 1.0,
+   "artifact_false_flag_rate": 0.0167,
+   "baseline_retrieval_jaccard": 1.0,
+   "evidence_traceability": 0.0,
+   "latency_ms_median": 7.27,
+   "latency_ms_p95": 10.73,
+   "llm_tokens": 0
+  }
+ },
+ "per_type": {
+  "deterministic": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "clean": {
+    "accuracy": 0.4167,
+    "unsupported": 7,
+    "n": 12
+   },
+   "conflicting_history": {
+    "accuracy": 0.0,
+    "unsupported": 12,
+    "n": 12
+   },
+   "insufficient_baseline": {
+    "accuracy": 0.0,
+    "unsupported": 12,
+    "n": 12
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "misleading_change": {
+    "accuracy": 0.0833,
+    "unsupported": 11,
+    "n": 12
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "tracking_artifact": {
+    "accuracy": 0.5,
+    "unsupported": 6,
+    "n": 12
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   }
+  },
+  "single_agent": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "clean": {
+    "accuracy": 0.9167,
+    "unsupported": 1,
+    "n": 12
+   },
+   "conflicting_history": {
+    "accuracy": 0.6667,
+    "unsupported": 4,
+    "n": 12
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "misleading_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "tracking_artifact": {
+    "accuracy": 0.5,
+    "unsupported": 6,
+    "n": 12
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   }
+  },
+  "collective_no_history": {
+   "change_with_incidental_artifact": {
+    "accuracy": 0.0833,
+    "unsupported": 0,
+    "n": 12
+   },
+   "clean": {
+    "accuracy": 0.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "conflicting_history": {
+    "accuracy": 0.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "misleading_change": {
+    "accuracy": 0.0833,
+    "unsupported": 0,
+    "n": 12
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "true_change": {
+    "accuracy": 0.0,
+    "unsupported": 0,
+    "n": 12
+   }
+  },
+  "collective_naive_history": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "clean": {
+    "accuracy": 0.9167,
+    "unsupported": 1,
+    "n": 12
+   },
+   "conflicting_history": {
+    "accuracy": 0.6667,
+    "unsupported": 4,
+    "n": 12
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "misleading_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   }
+  },
+  "collective_ci": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "clean": {
+    "accuracy": 0.9167,
+    "unsupported": 1,
+    "n": 12
+   },
+   "conflicting_history": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "misleading_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   }
+  },
+  "monolith_ci": {
+   "change_with_incidental_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "clean": {
+    "accuracy": 0.9167,
+    "unsupported": 1,
+    "n": 12
+   },
+   "conflicting_history": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "insufficient_baseline": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "irregular_timestamps": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "misleading_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "missing_frames": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "tracking_artifact": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   },
+   "true_change": {
+    "accuracy": 1.0,
+    "unsupported": 0,
+    "n": 12
+   }
+  }
+ },
+ "per_case": {
+  "deterministic": {
+   "dev-clean-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-1": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-4": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-7": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-8": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-9": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-10": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-11": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-tracking_artifact-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-1": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-3": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-5": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-7": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-9": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-11": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-insufficient_baseline-0": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-1": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-2": [
+    "CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-3": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-4": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-5": [
+    "CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-6": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-7": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-8": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-9": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-10": [
+    "CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-11": [
+    "NO_CHANGE",
+    "NO_BASELINE"
+   ],
+   "dev-misleading_change-0": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-1": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-2": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-3": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-4": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-5": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-6": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-7": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-8": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-9": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-misleading_change-11": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-true_change-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-6": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-11": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-conflicting_history-0": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-1": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-2": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-3": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-4": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-5": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-6": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-7": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-8": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-9": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-10": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-11": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-change_with_incidental_artifact-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-11": [
+    "CHANGE",
+    "CHANGE"
+   ]
+  },
+  "single_agent": {
+   "dev-clean-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-1": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-tracking_artifact-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-1": [
+    "NO_CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-3": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-5": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-7": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-9": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-11": [
+    "CHANGE",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-insufficient_baseline-0": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-1": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-2": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-3": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-4": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-5": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-6": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-7": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-8": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-9": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-10": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-11": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-misleading_change-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-misleading_change-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-true_change-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-6": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-11": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-conflicting_history-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-2": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-5": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-7": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-8": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-change_with_incidental_artifact-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-11": [
+    "CHANGE",
+    "CHANGE"
+   ]
+  },
+  "collective_no_history": {
+   "dev-clean-0": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-1": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-2": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-3": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-4": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-5": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-6": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-7": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-8": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-9": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-10": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-11": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-tracking_artifact-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-insufficient_baseline-0": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-1": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-2": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-3": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-4": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-5": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-6": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-7": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-8": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-9": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-10": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-11": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-misleading_change-0": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-1": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-2": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-3": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-4": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-5": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-6": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-7": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-8": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-9": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-misleading_change-11": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-true_change-0": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-1": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-2": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-3": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-4": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-5": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-6": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-7": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-8": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-9": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-10": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-true_change-11": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-conflicting_history-0": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-1": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-2": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-3": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-4": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-5": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-6": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-7": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-8": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-9": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-10": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-11": [
+    "NO_BASELINE",
+    "NO_CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-0": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-1": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-2": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-3": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-4": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-5": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-change_with_incidental_artifact-7": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-8": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-9": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-10": [
+    "NO_BASELINE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-11": [
+    "NO_BASELINE",
+    "CHANGE"
+   ]
+  },
+  "collective_naive_history": {
+   "dev-clean-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-1": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-tracking_artifact-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-insufficient_baseline-0": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-1": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-2": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-3": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-4": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-5": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-6": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-7": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-8": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-9": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-10": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-11": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-misleading_change-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-misleading_change-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-true_change-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-6": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-11": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-conflicting_history-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-2": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-5": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-7": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-8": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-change_with_incidental_artifact-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-11": [
+    "CHANGE",
+    "CHANGE"
+   ]
+  },
+  "collective_ci": {
+   "dev-clean-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-1": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-tracking_artifact-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-insufficient_baseline-0": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-1": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-2": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-3": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-4": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-5": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-6": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-7": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-8": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-9": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-10": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-11": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-misleading_change-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-misleading_change-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-true_change-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-6": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-11": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-conflicting_history-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-change_with_incidental_artifact-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-11": [
+    "CHANGE",
+    "CHANGE"
+   ]
+  },
+  "monolith_ci": {
+   "dev-clean-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-1": [
+    "CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-clean-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-tracking_artifact-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-tracking_artifact-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-missing_frames-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-0": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-1": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-2": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-3": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-4": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-5": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-7": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-8": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-9": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-irregular_timestamps-11": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-insufficient_baseline-0": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-1": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-2": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-3": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-4": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-5": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-6": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-7": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-8": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-9": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-10": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-insufficient_baseline-11": [
+    "NO_BASELINE",
+    "NO_BASELINE"
+   ],
+   "dev-misleading_change-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-misleading_change-10": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-misleading_change-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-true_change-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-6": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-true_change-11": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-conflicting_history-0": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-1": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-2": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-3": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-4": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-5": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-6": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-7": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-8": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-9": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-10": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-conflicting_history-11": [
+    "NO_CHANGE",
+    "NO_CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-0": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-1": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-2": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-3": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-4": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-5": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-6": [
+    "ABSTAIN",
+    "ABSTAIN"
+   ],
+   "dev-change_with_incidental_artifact-7": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-8": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-9": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-10": [
+    "CHANGE",
+    "CHANGE"
+   ],
+   "dev-change_with_incidental_artifact-11": [
+    "CHANGE",
+    "CHANGE"
+   ]
+  }
+ },
+ "faults": {
+  "signal_quality:silent": {
+   "accuracy": 0.3519,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "signal_quality:byzantine": {
+   "accuracy": 0.9907,
+   "unsupported_conclusion_rate": 0.0093,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "contextual_memory:silent": {
+   "accuracy": 0.463,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "contextual_memory:byzantine": {
+   "accuracy": 0.463,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "physiology:silent": {
+   "accuracy": 0.3519,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "physiology:byzantine": {
+   "accuracy": 0.5648,
+   "unsupported_conclusion_rate": 0.0093,
+   "over_abstention": 0.5862,
+   "appropriate_abstention": 1.0
+  },
+  "skeptic:silent": {
+   "accuracy": 0.9907,
+   "unsupported_conclusion_rate": 0.0093,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "skeptic:byzantine": {
+   "accuracy": 0.9907,
+   "unsupported_conclusion_rate": 0.0093,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "auditor:silent": {
+   "accuracy": 0.3519,
+   "unsupported_conclusion_rate": 0.0,
+   "over_abstention": 1.0,
+   "appropriate_abstention": 1.0
+  },
+  "auditor:byzantine": {
+   "accuracy": 0.9907,
+   "unsupported_conclusion_rate": 0.0093,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  }
+ },
+ "monolith_faults": {
+  "signal_quality:byzantine": {
+   "accuracy": 0.9907,
+   "unsupported_conclusion_rate": 0.0093,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "contextual_memory:byzantine": {
+   "accuracy": 0.6574,
+   "unsupported_conclusion_rate": 0.3426,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 0.76
+  },
+  "physiology:byzantine": {
+   "accuracy": 0.6759,
+   "unsupported_conclusion_rate": 0.3241,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 1.0
+  },
+  "skeptic:byzantine": {
+   "accuracy": 0.9352,
+   "unsupported_conclusion_rate": 0.0648,
+   "over_abstention": 0.0,
+   "appropriate_abstention": 0.88
+  }
+ }
+}

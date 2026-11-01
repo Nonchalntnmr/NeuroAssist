@@ -1,0 +1,4 @@
+# CI (parent B), pinned to an exact commit of its public repository. Not modified, not merged.
+contextual-intelligence @ git+https://github.com/Nonchalntnmr/contextual-intelligence.git@2e50658b868e27fca4ba5c11981b448076b93523
+fastapi==0.115.6
+pydantic>=2.5,<3

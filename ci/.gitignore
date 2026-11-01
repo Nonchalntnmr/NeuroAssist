@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+__pycache__/
+*.pyc
+.pytest_cache/
+.vercel
+.env*
+!.env.example
+*.db
+*.key
+next-env.d.ts
+tsconfig.tsbuildinfo

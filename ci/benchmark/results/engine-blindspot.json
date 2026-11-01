@@ -1,0 +1,107 @@
+{
+ "label": "SYNTHETIC",
+ "n_per_point": 100,
+ "noise": 0.1,
+ "fps": 30,
+ "dur": 10,
+ "rows": [
+  {
+   "spv": 0,
+   "pass_rate": 0.96,
+   "mean_abs_error": 0.0493926066277503,
+   "mean_ci_hw": 0.14377784333299148,
+   "ci_coverage": 0.96875
+  },
+  {
+   "spv": 0.2,
+   "pass_rate": 1,
+   "mean_abs_error": 0.16984834835947407,
+   "mean_ci_hw": 0.14838013779573336,
+   "ci_coverage": 0.38
+  },
+  {
+   "spv": 0.4,
+   "pass_rate": 0.93,
+   "mean_abs_error": 0.33326869679295446,
+   "mean_ci_hw": 0.18674819349104166,
+   "ci_coverage": 0.12903225806451613
+  },
+  {
+   "spv": 0.6,
+   "pass_rate": 0.8,
+   "mean_abs_error": 0.49569871433823465,
+   "mean_ci_hw": 0.25256947610592284,
+   "ci_coverage": 0.05
+  },
+  {
+   "spv": 0.8,
+   "pass_rate": 0.31,
+   "mean_abs_error": 0.5955393190597241,
+   "mean_ci_hw": 0.3310363711551371,
+   "ci_coverage": 0
+  },
+  {
+   "spv": 1,
+   "pass_rate": 0.17,
+   "mean_abs_error": 0.4776575049449291,
+   "mean_ci_hw": 0.3863377056555387,
+   "ci_coverage": 0.17647058823529413
+  },
+  {
+   "spv": 1.5,
+   "pass_rate": 0.05,
+   "mean_abs_error": 0.21423229787914044,
+   "mean_ci_hw": 0.3630596467778513,
+   "ci_coverage": 0.4
+  },
+  {
+   "spv": 2,
+   "pass_rate": 0.36,
+   "mean_abs_error": 0.08177423614295584,
+   "mean_ci_hw": 0.21543962631782967,
+   "ci_coverage": 0.9166666666666666
+  },
+  {
+   "spv": 2.5,
+   "pass_rate": 0.94,
+   "mean_abs_error": 0.06567023734348387,
+   "mean_ci_hw": 0.19637176473450998,
+   "ci_coverage": 0.9574468085106383
+  },
+  {
+   "spv": 3,
+   "pass_rate": 1,
+   "mean_abs_error": 0.07551360347046765,
+   "mean_ci_hw": 0.1891710814988937,
+   "ci_coverage": 0.97
+  },
+  {
+   "spv": 4,
+   "pass_rate": 0.99,
+   "mean_abs_error": 0.05641371427323242,
+   "mean_ci_hw": 0.1958827540950353,
+   "ci_coverage": 0.9797979797979798
+  },
+  {
+   "spv": 5,
+   "pass_rate": 0.99,
+   "mean_abs_error": 0.06688163264453341,
+   "mean_ci_hw": 0.1919370580484851,
+   "ci_coverage": 0.9696969696969697
+  },
+  {
+   "spv": 6,
+   "pass_rate": 0.99,
+   "mean_abs_error": 0.067982084027878,
+   "mean_ci_hw": 0.19073112470361187,
+   "ci_coverage": 0.9797979797979798
+  },
+  {
+   "spv": 8,
+   "pass_rate": 1,
+   "mean_abs_error": 0.060870586661843876,
+   "mean_ci_hw": 0.190269282573476,
+   "ci_coverage": 0.98
+  }
+ ]
+}
