@@ -1,0 +1,1804 @@
+{
+ "source": "/Users/nishnathrevuri/projects/contextual-intelligence/neuroassist-ci/benchmark/results/heldout.json",
+ "cases_sha256": "4030734b652f1435d40ad6640511127d73943580c11db3d705747d428df3ec46",
+ "n_cases": 270,
+ "headline": {
+  "deterministic": {
+   "label": "NeuroAssist gate + previous visit",
+   "accuracy": {
+    "k": 158,
+    "n": 270,
+    "p": 0.5852,
+    "wilson95": [
+     0.5256,
+     0.6424
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 112,
+    "n": 270,
+    "p": 0.4148,
+    "wilson95": [
+     0.3576,
+     0.4744
+    ]
+   },
+   "unsupported_among_conclusions": {
+    "k": 112,
+    "n": 194,
+    "p": 0.5773,
+    "wilson95": [
+     0.507,
+     0.6447
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 76,
+    "n": 123,
+    "p": 0.6179,
+    "wilson95": [
+     0.5297,
+     0.699
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "harmful_artifact_caught": {
+    "k": 74,
+    "n": 91,
+    "p": 0.8132,
+    "wilson95": [
+     0.721,
+     0.88
+    ]
+   },
+   "artifact_detection_recall": {
+    "k": 74,
+    "n": 120,
+    "p": 0.6167,
+    "wilson95": [
+     0.5273,
+     0.6988
+    ],
+    "recovered_from_rate": true
+   },
+   "artifact_false_flag_rate": {
+    "k": 2,
+    "n": 150,
+    "p": 0.0133,
+    "wilson95": [
+     0.0037,
+     0.0473
+    ],
+    "recovered_from_rate": true
+   }
+  },
+  "single_agent": {
+   "label": "Single agent, one pass, full history",
+   "accuracy": {
+    "k": 248,
+    "n": 270,
+    "p": 0.9185,
+    "wilson95": [
+     0.8797,
+     0.9456
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 22,
+    "n": 270,
+    "p": 0.0815,
+    "wilson95": [
+     0.0544,
+     0.1203
+    ]
+   },
+   "unsupported_among_conclusions": {
+    "k": 22,
+    "n": 164,
+    "p": 0.1341,
+    "wilson95": [
+     0.0903,
+     0.1948
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 106,
+    "n": 123,
+    "p": 0.8618,
+    "wilson95": [
+     0.7898,
+     0.9119
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "harmful_artifact_caught": {
+    "k": 74,
+    "n": 91,
+    "p": 0.8132,
+    "wilson95": [
+     0.721,
+     0.88
+    ]
+   },
+   "artifact_detection_recall": {
+    "k": 74,
+    "n": 120,
+    "p": 0.6167,
+    "wilson95": [
+     0.5273,
+     0.6988
+    ],
+    "recovered_from_rate": true
+   },
+   "artifact_false_flag_rate": {
+    "k": 2,
+    "n": 150,
+    "p": 0.0133,
+    "wilson95": [
+     0.0037,
+     0.0473
+    ],
+    "recovered_from_rate": true
+   }
+  },
+  "collective_no_history": {
+   "label": "Collective, no historical context",
+   "accuracy": {
+    "k": 123,
+    "n": 270,
+    "p": 0.4556,
+    "wilson95": [
+     0.3972,
+     0.5152
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 0,
+    "n": 270,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.014
+    ]
+   },
+   "unsupported_among_conclusions": {
+    "k": 0,
+    "n": 0,
+    "p": null,
+    "wilson95": null
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "over_abstention": {
+    "k": 147,
+    "n": 147,
+    "p": 1.0,
+    "wilson95": [
+     0.9745,
+     1.0
+    ]
+   },
+   "harmful_artifact_caught": {
+    "k": 91,
+    "n": 91,
+    "p": 1.0,
+    "wilson95": [
+     0.9595,
+     1.0
+    ]
+   },
+   "artifact_detection_recall": {
+    "k": 91,
+    "n": 120,
+    "p": 0.7583,
+    "wilson95": [
+     0.6745,
+     0.8261
+    ],
+    "recovered_from_rate": true
+   },
+   "artifact_false_flag_rate": {
+    "k": 2,
+    "n": 150,
+    "p": 0.0133,
+    "wilson95": [
+     0.0037,
+     0.0473
+    ],
+    "recovered_from_rate": true
+   }
+  },
+  "collective_naive_history": {
+   "label": "Collective, raw history (no CI)",
+   "accuracy": {
+    "k": 265,
+    "n": 270,
+    "p": 0.9815,
+    "wilson95": [
+     0.9574,
+     0.9921
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 5,
+    "n": 270,
+    "p": 0.0185,
+    "wilson95": [
+     0.0079,
+     0.0426
+    ]
+   },
+   "unsupported_among_conclusions": {
+    "k": 5,
+    "n": 147,
+    "p": 0.034,
+    "wilson95": [
+     0.0146,
+     0.0771
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "harmful_artifact_caught": {
+    "k": 91,
+    "n": 91,
+    "p": 1.0,
+    "wilson95": [
+     0.9595,
+     1.0
+    ]
+   },
+   "artifact_detection_recall": {
+    "k": 91,
+    "n": 120,
+    "p": 0.7583,
+    "wilson95": [
+     0.6745,
+     0.8261
+    ],
+    "recovered_from_rate": true
+   },
+   "artifact_false_flag_rate": {
+    "k": 2,
+    "n": 150,
+    "p": 0.0133,
+    "wilson95": [
+     0.0037,
+     0.0473
+    ],
+    "recovered_from_rate": true
+   }
+  },
+  "collective_ci": {
+   "label": "Collective + CI memory",
+   "accuracy": {
+    "k": 267,
+    "n": 270,
+    "p": 0.9889,
+    "wilson95": [
+     0.9678,
+     0.9962
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "unsupported_among_conclusions": {
+    "k": 3,
+    "n": 147,
+    "p": 0.0204,
+    "wilson95": [
+     0.007,
+     0.0583
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "harmful_artifact_caught": {
+    "k": 91,
+    "n": 91,
+    "p": 1.0,
+    "wilson95": [
+     0.9595,
+     1.0
+    ]
+   },
+   "artifact_detection_recall": {
+    "k": 91,
+    "n": 120,
+    "p": 0.7583,
+    "wilson95": [
+     0.6745,
+     0.8261
+    ],
+    "recovered_from_rate": true
+   },
+   "artifact_false_flag_rate": {
+    "k": 2,
+    "n": 150,
+    "p": 0.0133,
+    "wilson95": [
+     0.0037,
+     0.0473
+    ],
+    "recovered_from_rate": true
+   }
+  },
+  "monolith_ci": {
+   "label": "Ablation: same checks in one function + CI",
+   "accuracy": {
+    "k": 267,
+    "n": 270,
+    "p": 0.9889,
+    "wilson95": [
+     0.9678,
+     0.9962
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "unsupported_among_conclusions": {
+    "k": 3,
+    "n": 147,
+    "p": 0.0204,
+    "wilson95": [
+     0.007,
+     0.0583
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "harmful_artifact_caught": {
+    "k": 91,
+    "n": 91,
+    "p": 1.0,
+    "wilson95": [
+     0.9595,
+     1.0
+    ]
+   },
+   "artifact_detection_recall": {
+    "k": 91,
+    "n": 120,
+    "p": 0.7583,
+    "wilson95": [
+     0.6745,
+     0.8261
+    ],
+    "recovered_from_rate": true
+   },
+   "artifact_false_flag_rate": {
+    "k": 2,
+    "n": 150,
+    "p": 0.0133,
+    "wilson95": [
+     0.0037,
+     0.0473
+    ],
+    "recovered_from_rate": true
+   }
+  }
+ },
+ "per_type": {
+  "deterministic": {
+   "change_with_incidental_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "clean": {
+    "k": 23,
+    "n": 30,
+    "p": 0.7667,
+    "wilson95": [
+     0.5907,
+     0.8821
+    ],
+    "unsupported": 7
+   },
+   "conflicting_history": {
+    "k": 1,
+    "n": 30,
+    "p": 0.0333,
+    "wilson95": [
+     0.0059,
+     0.1667
+    ],
+    "unsupported": 29
+   },
+   "insufficient_baseline": {
+    "k": 0,
+    "n": 30,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.1135
+    ],
+    "unsupported": 30
+   },
+   "irregular_timestamps": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "misleading_change": {
+    "k": 1,
+    "n": 30,
+    "p": 0.0333,
+    "wilson95": [
+     0.0059,
+     0.1667
+    ],
+    "unsupported": 29
+   },
+   "missing_frames": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "tracking_artifact": {
+    "k": 13,
+    "n": 30,
+    "p": 0.4333,
+    "wilson95": [
+     0.2738,
+     0.608
+    ],
+    "unsupported": 17
+   },
+   "true_change": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   }
+  },
+  "single_agent": {
+   "change_with_incidental_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "clean": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "conflicting_history": {
+    "k": 27,
+    "n": 30,
+    "p": 0.9,
+    "wilson95": [
+     0.7438,
+     0.9654
+    ],
+    "unsupported": 3
+   },
+   "insufficient_baseline": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "irregular_timestamps": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "misleading_change": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "missing_frames": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "tracking_artifact": {
+    "k": 13,
+    "n": 30,
+    "p": 0.4333,
+    "wilson95": [
+     0.2738,
+     0.608
+    ],
+    "unsupported": 17
+   },
+   "true_change": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   }
+  },
+  "collective_no_history": {
+   "change_with_incidental_artifact": {
+    "k": 1,
+    "n": 30,
+    "p": 0.0333,
+    "wilson95": [
+     0.0059,
+     0.1667
+    ],
+    "unsupported": 0
+   },
+   "clean": {
+    "k": 0,
+    "n": 30,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.1135
+    ],
+    "unsupported": 0
+   },
+   "conflicting_history": {
+    "k": 1,
+    "n": 30,
+    "p": 0.0333,
+    "wilson95": [
+     0.0059,
+     0.1667
+    ],
+    "unsupported": 0
+   },
+   "insufficient_baseline": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "irregular_timestamps": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "misleading_change": {
+    "k": 1,
+    "n": 30,
+    "p": 0.0333,
+    "wilson95": [
+     0.0059,
+     0.1667
+    ],
+    "unsupported": 0
+   },
+   "missing_frames": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "tracking_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "true_change": {
+    "k": 0,
+    "n": 30,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.1135
+    ],
+    "unsupported": 0
+   }
+  },
+  "collective_naive_history": {
+   "change_with_incidental_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "clean": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "conflicting_history": {
+    "k": 27,
+    "n": 30,
+    "p": 0.9,
+    "wilson95": [
+     0.7438,
+     0.9654
+    ],
+    "unsupported": 3
+   },
+   "insufficient_baseline": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "irregular_timestamps": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "misleading_change": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "missing_frames": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "tracking_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "true_change": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   }
+  },
+  "collective_ci": {
+   "change_with_incidental_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "clean": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "conflicting_history": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "insufficient_baseline": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "irregular_timestamps": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "misleading_change": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "missing_frames": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "tracking_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "true_change": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   }
+  },
+  "monolith_ci": {
+   "change_with_incidental_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "clean": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "conflicting_history": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "insufficient_baseline": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "irregular_timestamps": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "misleading_change": {
+    "k": 29,
+    "n": 30,
+    "p": 0.9667,
+    "wilson95": [
+     0.8333,
+     0.9941
+    ],
+    "unsupported": 1
+   },
+   "missing_frames": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "tracking_artifact": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   },
+   "true_change": {
+    "k": 30,
+    "n": 30,
+    "p": 1.0,
+    "wilson95": [
+     0.8865,
+     1.0
+    ],
+    "unsupported": 0
+   }
+  }
+ },
+ "mcnemar": {
+  "collective_ci_vs_single_agent": {
+   "comparison": "collective_ci vs single_agent",
+   "n": 270,
+   "both_correct": 247,
+   "both_wrong": 2,
+   "b_collective_ci_right_single_agent_wrong": 20,
+   "c_collective_ci_wrong_single_agent_right": 1,
+   "exact_mcnemar_p_two_sided": 2.09808349609375e-05,
+   "identical_decisions": 249,
+   "discordant_case_ids": [
+    "heldout-conflicting_history-15",
+    "heldout-conflicting_history-2",
+    "heldout-conflicting_history-22",
+    "heldout-conflicting_history-29",
+    "heldout-tracking_artifact-1",
+    "heldout-tracking_artifact-11",
+    "heldout-tracking_artifact-12",
+    "heldout-tracking_artifact-13",
+    "heldout-tracking_artifact-15",
+    "heldout-tracking_artifact-16",
+    "heldout-tracking_artifact-17",
+    "heldout-tracking_artifact-19",
+    "heldout-tracking_artifact-21",
+    "heldout-tracking_artifact-23",
+    "heldout-tracking_artifact-25",
+    "heldout-tracking_artifact-27",
+    "heldout-tracking_artifact-29",
+    "heldout-tracking_artifact-3",
+    "heldout-tracking_artifact-5",
+    "heldout-tracking_artifact-7",
+    "heldout-tracking_artifact-9"
+   ]
+  },
+  "collective_ci_vs_monolith_ci": {
+   "comparison": "collective_ci vs monolith_ci",
+   "n": 270,
+   "both_correct": 267,
+   "both_wrong": 3,
+   "b_collective_ci_right_monolith_ci_wrong": 0,
+   "c_collective_ci_wrong_monolith_ci_right": 0,
+   "exact_mcnemar_p_two_sided": 1.0,
+   "identical_decisions": 270,
+   "discordant_case_ids": []
+  },
+  "collective_ci_vs_collective_naive_history": {
+   "comparison": "collective_ci vs collective_naive_history",
+   "n": 270,
+   "both_correct": 264,
+   "both_wrong": 2,
+   "b_collective_ci_right_collective_naive_history_wrong": 3,
+   "c_collective_ci_wrong_collective_naive_history_right": 1,
+   "exact_mcnemar_p_two_sided": 0.625,
+   "identical_decisions": 266,
+   "discordant_case_ids": [
+    "heldout-conflicting_history-15",
+    "heldout-conflicting_history-2",
+    "heldout-conflicting_history-22",
+    "heldout-conflicting_history-29"
+   ]
+  },
+  "collective_ci_vs_deterministic": {
+   "comparison": "collective_ci vs deterministic",
+   "n": 270,
+   "both_correct": 158,
+   "both_wrong": 3,
+   "b_collective_ci_right_deterministic_wrong": 109,
+   "c_collective_ci_wrong_deterministic_right": 0,
+   "exact_mcnemar_p_two_sided": 3.0814879110195774e-33,
+   "identical_decisions": 161,
+   "discordant_case_ids": [
+    "heldout-clean-18",
+    "heldout-clean-19",
+    "heldout-clean-23",
+    "heldout-clean-25",
+    "heldout-clean-4",
+    "heldout-clean-8",
+    "heldout-conflicting_history-0",
+    "heldout-conflicting_history-1",
+    "heldout-conflicting_history-10",
+    "heldout-conflicting_history-11",
+    "heldout-conflicting_history-12",
+    "heldout-conflicting_history-13",
+    "heldout-conflicting_history-14",
+    "heldout-conflicting_history-15",
+    "heldout-conflicting_history-16",
+    "heldout-conflicting_history-17",
+    "heldout-conflicting_history-18",
+    "heldout-conflicting_history-19",
+    "heldout-conflicting_history-20",
+    "heldout-conflicting_history-21",
+    "heldout-conflicting_history-22",
+    "heldout-conflicting_history-23",
+    "heldout-conflicting_history-24",
+    "heldout-conflicting_history-25",
+    "heldout-conflicting_history-26",
+    "heldout-conflicting_history-27",
+    "heldout-conflicting_history-28",
+    "heldout-conflicting_history-29",
+    "heldout-conflicting_history-3",
+    "heldout-conflicting_history-5",
+    "heldout-conflicting_history-6",
+    "heldout-conflicting_history-7",
+    "heldout-conflicting_history-8",
+    "heldout-conflicting_history-9",
+    "heldout-insufficient_baseline-0",
+    "heldout-insufficient_baseline-1",
+    "heldout-insufficient_baseline-10",
+    "heldout-insufficient_baseline-11",
+    "heldout-insufficient_baseline-12",
+    "heldout-insufficient_baseline-13",
+    "heldout-insufficient_baseline-14",
+    "heldout-insufficient_baseline-15",
+    "heldout-insufficient_baseline-16",
+    "heldout-insufficient_baseline-17",
+    "heldout-insufficient_baseline-18",
+    "heldout-insufficient_baseline-19",
+    "heldout-insufficient_baseline-2",
+    "heldout-insufficient_baseline-20",
+    "heldout-insufficient_baseline-21",
+    "heldout-insufficient_baseline-22",
+    "heldout-insufficient_baseline-23",
+    "heldout-insufficient_baseline-24",
+    "heldout-insufficient_baseline-25",
+    "heldout-insufficient_baseline-26",
+    "heldout-insufficient_baseline-27",
+    "heldout-insufficient_baseline-28",
+    "heldout-insufficient_baseline-29",
+    "heldout-insufficient_baseline-3",
+    "heldout-insufficient_baseline-4",
+    "heldout-insufficient_baseline-5",
+    "heldout-insufficient_baseline-6",
+    "heldout-insufficient_baseline-7",
+    "heldout-insufficient_baseline-8",
+    "heldout-insufficient_baseline-9",
+    "heldout-misleading_change-0",
+    "heldout-misleading_change-1",
+    "heldout-misleading_change-10",
+    "heldout-misleading_change-11",
+    "heldout-misleading_change-12",
+    "heldout-misleading_change-13",
+    "heldout-misleading_change-14",
+    "heldout-misleading_change-15",
+    "heldout-misleading_change-17",
+    "heldout-misleading_change-18",
+    "heldout-misleading_change-19",
+    "heldout-misleading_change-2",
+    "heldout-misleading_change-20",
+    "heldout-misleading_change-21",
+    "heldout-misleading_change-22",
+    "heldout-misleading_change-23",
+    "heldout-misleading_change-24",
+    "heldout-misleading_change-25",
+    "heldout-misleading_change-27",
+    "heldout-misleading_change-28",
+    "heldout-misleading_change-29",
+    "heldout-misleading_change-3",
+    "heldout-misleading_change-4",
+    "heldout-misleading_change-5",
+    "heldout-misleading_change-6",
+    "heldout-misleading_change-7",
+    "heldout-misleading_change-8",
+    "heldout-misleading_change-9",
+    "heldout-tracking_artifact-1",
+    "heldout-tracking_artifact-11",
+    "heldout-tracking_artifact-12",
+    "heldout-tracking_artifact-13",
+    "heldout-tracking_artifact-15",
+    "heldout-tracking_artifact-16",
+    "heldout-tracking_artifact-17",
+    "heldout-tracking_artifact-19",
+    "heldout-tracking_artifact-21",
+    "heldout-tracking_artifact-23",
+    "heldout-tracking_artifact-25",
+    "heldout-tracking_artifact-27",
+    "heldout-tracking_artifact-29",
+    "heldout-tracking_artifact-3",
+    "heldout-tracking_artifact-5",
+    "heldout-tracking_artifact-7",
+    "heldout-tracking_artifact-9"
+   ]
+  }
+ },
+ "cost_latency": {
+  "deterministic": {
+   "latency_ms_median": 0.01,
+   "latency_ms_p95": 0.01,
+   "latency_ms_mean": null,
+   "llm_tokens": 0,
+   "ci_calls": null,
+   "rounds": null
+  },
+  "single_agent": {
+   "latency_ms_median": 0.01,
+   "latency_ms_p95": 0.01,
+   "latency_ms_mean": null,
+   "llm_tokens": 0,
+   "ci_calls": null,
+   "rounds": null
+  },
+  "collective_no_history": {
+   "latency_ms_median": 8.21,
+   "latency_ms_p95": 14.28,
+   "latency_ms_mean": null,
+   "llm_tokens": 0,
+   "ci_calls": null,
+   "rounds": null
+  },
+  "collective_naive_history": {
+   "latency_ms_median": 8.59,
+   "latency_ms_p95": 14.25,
+   "latency_ms_mean": null,
+   "llm_tokens": 0,
+   "ci_calls": null,
+   "rounds": null
+  },
+  "collective_ci": {
+   "latency_ms_median": 9.59,
+   "latency_ms_p95": 14.98,
+   "latency_ms_mean": null,
+   "llm_tokens": 0,
+   "ci_calls": null,
+   "rounds": null
+  },
+  "monolith_ci": {
+   "latency_ms_median": 7.19,
+   "latency_ms_p95": 9.28,
+   "latency_ms_mean": null,
+   "llm_tokens": 0,
+   "ci_calls": null,
+   "rounds": null
+  }
+ },
+ "faults": {
+  "signal_quality:silent": {
+   "accuracy": {
+    "k": 93,
+    "n": 270,
+    "p": 0.3444,
+    "wilson95": [
+     0.2903,
+     0.403
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 0,
+    "n": 270,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.014
+    ]
+   },
+   "over_abstention": {
+    "k": 147,
+    "n": 147,
+    "p": 1.0,
+    "wilson95": [
+     0.9745,
+     1.0
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "signal_quality:byzantine": {
+   "accuracy": {
+    "k": 267,
+    "n": 270,
+    "p": 0.9889,
+    "wilson95": [
+     0.9678,
+     0.9962
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "contextual_memory:silent": {
+   "accuracy": {
+    "k": 123,
+    "n": 270,
+    "p": 0.4556,
+    "wilson95": [
+     0.3972,
+     0.5152
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 0,
+    "n": 270,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.014
+    ]
+   },
+   "over_abstention": {
+    "k": 147,
+    "n": 147,
+    "p": 1.0,
+    "wilson95": [
+     0.9745,
+     1.0
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "contextual_memory:byzantine": {
+   "accuracy": {
+    "k": 123,
+    "n": 270,
+    "p": 0.4556,
+    "wilson95": [
+     0.3972,
+     0.5152
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 0,
+    "n": 270,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.014
+    ]
+   },
+   "over_abstention": {
+    "k": 147,
+    "n": 147,
+    "p": 1.0,
+    "wilson95": [
+     0.9745,
+     1.0
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "physiology:silent": {
+   "accuracy": {
+    "k": 93,
+    "n": 270,
+    "p": 0.3444,
+    "wilson95": [
+     0.2903,
+     0.403
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 0,
+    "n": 270,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.014
+    ]
+   },
+   "over_abstention": {
+    "k": 147,
+    "n": 147,
+    "p": 1.0,
+    "wilson95": [
+     0.9745,
+     1.0
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "physiology:byzantine": {
+   "accuracy": {
+    "k": 152,
+    "n": 270,
+    "p": 0.563,
+    "wilson95": [
+     0.5033,
+     0.6208
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "over_abstention": {
+    "k": 85,
+    "n": 147,
+    "p": 0.5782,
+    "wilson95": [
+     0.4974,
+     0.6551
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "skeptic:silent": {
+   "accuracy": {
+    "k": 267,
+    "n": 270,
+    "p": 0.9889,
+    "wilson95": [
+     0.9678,
+     0.9962
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "skeptic:byzantine": {
+   "accuracy": {
+    "k": 267,
+    "n": 270,
+    "p": 0.9889,
+    "wilson95": [
+     0.9678,
+     0.9962
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "auditor:silent": {
+   "accuracy": {
+    "k": 93,
+    "n": 270,
+    "p": 0.3444,
+    "wilson95": [
+     0.2903,
+     0.403
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 0,
+    "n": 270,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.014
+    ]
+   },
+   "over_abstention": {
+    "k": 147,
+    "n": 147,
+    "p": 1.0,
+    "wilson95": [
+     0.9745,
+     1.0
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "auditor:byzantine": {
+   "accuracy": {
+    "k": 267,
+    "n": 270,
+    "p": 0.9889,
+    "wilson95": [
+     0.9678,
+     0.9962
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  }
+ },
+ "monolith_faults": {
+  "signal_quality:byzantine": {
+   "accuracy": {
+    "k": 267,
+    "n": 270,
+    "p": 0.9889,
+    "wilson95": [
+     0.9678,
+     0.9962
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 3,
+    "n": 270,
+    "p": 0.0111,
+    "wilson95": [
+     0.0038,
+     0.0322
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "contextual_memory:byzantine": {
+   "accuracy": {
+    "k": 179,
+    "n": 270,
+    "p": 0.663,
+    "wilson95": [
+     0.6046,
+     0.7167
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 91,
+    "n": 270,
+    "p": 0.337,
+    "wilson95": [
+     0.2833,
+     0.3954
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 93,
+    "n": 123,
+    "p": 0.7561,
+    "wilson95": [
+     0.6732,
+     0.8235
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "physiology:byzantine": {
+   "accuracy": {
+    "k": 182,
+    "n": 270,
+    "p": 0.6741,
+    "wilson95": [
+     0.6161,
+     0.7272
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 88,
+    "n": 270,
+    "p": 0.3259,
+    "wilson95": [
+     0.2728,
+     0.3839
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 123,
+    "n": 123,
+    "p": 1.0,
+    "wilson95": [
+     0.9697,
+     1.0
+    ]
+   },
+   "recovered_from_rate": true
+  },
+  "skeptic:byzantine": {
+   "accuracy": {
+    "k": 250,
+    "n": 270,
+    "p": 0.9259,
+    "wilson95": [
+     0.8884,
+     0.9515
+    ]
+   },
+   "unsupported_conclusion_rate": {
+    "k": 20,
+    "n": 270,
+    "p": 0.0741,
+    "wilson95": [
+     0.0485,
+     0.1116
+    ]
+   },
+   "over_abstention": {
+    "k": 0,
+    "n": 147,
+    "p": 0.0,
+    "wilson95": [
+     0.0,
+     0.0255
+    ]
+   },
+   "appropriate_abstention": {
+    "k": 106,
+    "n": 123,
+    "p": 0.8618,
+    "wilson95": [
+     0.7898,
+     0.9119
+    ]
+   },
+   "recovered_from_rate": true
+  }
+ },
+ "checks": []
+}
